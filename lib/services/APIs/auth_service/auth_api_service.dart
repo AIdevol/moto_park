@@ -209,9 +209,6 @@ class AuthenticationApiService extends GetxService
 
   Future<Map<String, dynamic>> updateUserDetailsApiCall( userid, reqeuestBody) async {
     try {
-      // final response = await dioClient!.put(
-      //    "api/user_details/$userid/" ,options: Options(
-      //     headers: {'Authorization': 'Bearer ${await storage.read(LOCALKEY_token)}'}) );
       final response = await dioClient!.put(
            "${ApiEnd.userdetailsEnd}/$userid/" ,options: Options(
             headers: {'Authorization': 'Bearer ${await storage.read(LOCALKEY_token)}'}) );

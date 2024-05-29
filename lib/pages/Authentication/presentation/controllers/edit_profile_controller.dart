@@ -14,6 +14,7 @@ import 'package:moto_park/utilities/custom_flashbar.dart';
 
 import '../../../../main.dart';
 import '../../../../response_model/register_response_model.dart';
+import '../../../../response_model/user_data_modal.dart';
 import '../../../../services/login_service.dart';
 
 
@@ -206,7 +207,29 @@ class EditProfileController extends GetxController {
     });
   }
 
-
+  // void updateUserProfile() {
+  //   UserDataModal userDataModal = Get.find<GetLoginModalService>().getUserDataModal();
+  //
+  //   userDataModal.firstName = firstNameController.text;
+  //   userDataModal.id = int.tryParse(codeController.text);
+  //   userDataModal.email = emailController.text;
+  //   userDataModal.phone = phoneController.text;
+  //   userDataModal.dateOfBirth = dobController.text;
+  //   userDataModal.address = addressController.text;
+  //   userDataModal.emergencyContact = emergencyContactController.text;
+  //   userDataModal.emergencyContact2 = emergencyContactController2.text;
+  //   userDataModal.bloodGroup = bloodGroupController.text;
+  //   userDataModal.gender = genderController.text;
+  //
+  //   Get.find<AuthenticationApiService>()
+  //       .updateUserProfileApiCall(userDataModal)
+  //       .then((value) {
+  //     Get.find<GetLoginModalService>().setUserDataModal(userDataModal: value);
+  //     toast('Profile updated successfully');
+  //   }).onError((error, stackTrace) {
+  //     toast(error.toString());
+  //   });
+  // }
 
   // ==============================================================fetch UserDetails=========================================================
    hitGetUserProfileAPI() {
