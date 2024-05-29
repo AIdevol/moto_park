@@ -57,7 +57,7 @@ class EditProfileController extends GetxController {
   String altCountryCodeVal = "+91";
   String profileImg = '';
   var currencyIcon;
-  // late UserDetails userDetails;
+
   UserDetails? userDetails = UserDetails();
 
   String? idIs;
@@ -255,5 +255,7 @@ class EditProfileController extends GetxController {
   }
   Future<void> hitApiToUpdateProfileLogo() async {
 // Implement your logic to update the profile logo
+//if
+
   }
 }
