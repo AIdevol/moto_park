@@ -245,21 +245,21 @@ class HomeController extends GetxController
   @override
   void onInit() {
 
-    // initAnimation();
+    initAnimation();
     fetchLoginDetails();
     super.onInit();
   }
   //
-  // void initAnimation() {
-  //   animationController = AnimationController(
-  //     duration: const Duration(milliseconds: 1),
-  //     vsync: this,
-  //   )..addListener(() {
-  //       update();
-  //     });
-  //
-  //   animationController.forward();
-  // }
+  void initAnimation() {
+    animationController = AnimationController(
+      duration: const Duration(milliseconds: 1),
+      vsync: this,
+    )..addListener(() {
+        update();
+      });
+
+    animationController.forward();
+  }
 
   void fetchLoginDetails() {
     // print(storage.read(LoginModelStKey));
