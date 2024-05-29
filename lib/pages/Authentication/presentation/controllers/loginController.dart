@@ -9,6 +9,7 @@ import 'package:moto_park/services/network_exception.dart';
 import 'package:moto_park/utilities/custom_flashbar.dart';
 
 import '../../../../main.dart';
+import '../../../../services/login_service.dart';
 
 class LoginController extends GetxController {
 
@@ -46,6 +47,7 @@ class LoginController extends GetxController {
 
     super.onClose();
   }
+
 //   @override
 // void dispose(){
 //     _focusNode.dispose();
@@ -71,14 +73,13 @@ class LoginController extends GetxController {
     Get.find<AuthenticationApiService>()
         .loginApiCall(dataBody: loginReq)
         .then((value) async {
-
       customLoader.hide();
       loginModel = value;
       toast(loginModel.message);
       storage.write(LOCALKEY_token, loginModel.accessToken ?? "");
+      storage.write(userId, loginModel.userDetails?.id.toString() ?? "");
       storage.write(RefreshToken, loginModel.refreshToken ?? "");
       storage.write(isFirstTime, false);
-      storage.write(LoginModelStKey, loginModel.userDetails);
       print("isVerifiedQr: $isVerifiedQr, isSubscribed: $isSubscribed");
       if (storage.read(isVerifiedQr) == true &&
           (storage.read(isSubscribed) == true)) {
@@ -87,29 +88,12 @@ class LoginController extends GetxController {
       } else {
         // Get.toNamed(AppRoutes.qrScreen);
         Get.toNamed(AppRoutes.homeScreen);
+        customLoader.hide();
       }
       update();
     }).onError((error, stackTrace) {
-      if (!Get.isRegistered<LoginController>()) {
-
-        return;
-      }
       customLoader.hide();
       toast(error.toString());
-      String errorMessage = NetworkExceptions.getDioException(error);
-      print("Error during login API call: $error");
-      print("StackTrace: $stackTrace");
-      toast(errorMessage);
-      /* if (error is DioException) {
-        if (error.response?.statusCode == 401) {
-          toast("Incorrect email/phone or password. Please try again.");
-        } else {
-          toast("Error: ${error.message}");
-        }
-      } else {
-        toast("Unexpected Error: ${error.toString()}");
-        // Get.toNamed(AppRoutes.homeScreen);
-      } */
     });
   }
 }

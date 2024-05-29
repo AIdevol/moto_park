@@ -64,18 +64,6 @@ class AuthenticationApiService extends GetxService
       return Future.error(NetworkExceptions.getDioException(e));
     }
   }
-
-  // @override
-  // Future<RegisterResponseModel> logoutApiCall(
-  //     {Map<String, dynamic>? dataBody,}) async {
-  //   try {
-  //     final response = await dioClient!
-  //         .post(ApiEnd.logoutEnd, data: dataBody, skipAuth: false,  );
-  //     return RegisterResponseModel.fromJson(response);
-  //   } catch (e) {
-  //     return Future.error(NetworkExceptions.getDioException(e));
-  //   }
-  // }
   @override
   Future<RegisterResponseModel> logoutApiCall(
       {Map<String, dynamic>? dataBody}) async {
@@ -180,20 +168,11 @@ class AuthenticationApiService extends GetxService
     }
   }
 
-  // Future<Map<String, dynamic>> getUserDetailsApiCall() async {
-  //   try {
-  //     final response = await dioClient!.get(ApiEnd.userdetailsEnd,options: Options(
-  //         headers: {'Authorization': 'Bearer ${await storage.read(LOCALKEY_token)}'}) );
-  //     return response.UserDetails;
-  //   } catch (e) {
-  //     throw NetworkExceptions.getDioException(e);
-  //   }
-  // }
-  Future<Map<String, dynamic>> getUserDetailsApiCall(userid) async {
+  Future<UserDetails> getUserDetailsApiCall(userid) async {
     try {
       final response = await dioClient!.get(
           "${ApiEnd.userdetailsEnd}/$userid/", skipAuth: false );
-      return response;
+      return UserDetails.fromJson(response);
     } catch (e) {
       throw NetworkExceptions.getDioException(e);
     }

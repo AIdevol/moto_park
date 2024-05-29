@@ -14,6 +14,7 @@ import 'package:moto_park/utilities/custom_flashbar.dart';
 
 import '../../../../main.dart';
 import '../../../../response_model/register_response_model.dart';
+import '../../../../services/login_service.dart';
 
 
 class EditProfileController extends GetxController {
@@ -58,8 +59,7 @@ class EditProfileController extends GetxController {
   // late UserDetails userDetails;
   UserDetails? userDetails = UserDetails();
 
-
-
+  String? idIs;
 
   // final UserDetails = "";
   @override
@@ -92,21 +92,6 @@ class EditProfileController extends GetxController {
 
   @override
   void onInit() {
-    userDetails = storage.read(LoginModelStKey);
-    print( "userDetails?.city??''");
-    print( userDetails?.city??'');
-
-    // userDetails = storage.read(userDetails);
-    // if(storage.read(LoginModelStKey)!=null) {
-    //   userDetails = storage.read(LoginModelStKey);
-    // }
-    // final userDetailsString = jsonEncode(userDetails?.toJson());
-    // storage.write(LoginModelStKey, userDetailsString);
-    // final userDetailsString = storage.read(LoginModelStKey);
-    // if (userDetailsString != null) {
-    //   userDetails = UserDetails.fromJson(jsonDecode(userDetailsString));
-    // }
-
     firstNameController = TextEditingController();
     codeController = TextEditingController();
     emailController = TextEditingController();
@@ -131,11 +116,7 @@ class EditProfileController extends GetxController {
     genderControllerFocusNode = FocusNode();
     dobFocusNode = FocusNode();
     phoneFocusNode = FocusNode();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      hitGetUserProfileAPI();
-      updateUserDetails();
-    });
+    hitGetUserProfileAPI();
     super.onInit();
   }
 
@@ -226,40 +207,27 @@ class EditProfileController extends GetxController {
   }
 
 
+
   // ==============================================================fetch UserDetails=========================================================
    hitGetUserProfileAPI() {
-
-    customLoader.show();
     FocusManager.instance.primaryFocus!.unfocus();
     Get.find<AuthenticationApiService>()
-        .getUserDetailsApiCall(userDetails?.id??'')
+        .getUserDetailsApiCall(storage.read(userId))
         .then((value) async {
-      customLoader.hide();
-      UserDetails userDetails = UserDetails.fromJson(value);
-      firstNameController.text = userDetails.firstName ?? '';
-      codeController.text = userDetails.id?.toString() ?? '';
-      emailController.text = userDetails.email ?? '';
-      phoneController.text = userDetails.phone ?? '';
-      dobController.text = userDetails.dateOfBirth ?? '';
-      addressController.text = userDetails.address ?? '';
-      emergencyContactController.text = userDetails.emergencyContact ?? '';
-      emergencyContactController2.text = userDetails.emergencyContact2 ?? '';
-      bloodGroupController.text = userDetails.bloodGroup ?? '';
-      genderController.text = userDetails.gender ?? '';
-      passwordController.text = ''; // Do not fetch password for security reasons
-      confirmPasswordController.text = ''; // Do not fetch confirm password
-      toast("User profile fetched successfully");
+      Get.find<GetLoginModalService>().setUserDataModal(userDataModal: value);
+      firstNameController.text = value.firstName ?? '';
+      codeController.text = value.id?.toString() ?? '';
+      emailController.text = value.email ?? '';
+      phoneController.text = value.phone ?? '';
+      dobController.text = value.dateOfBirth ?? '';
+      addressController.text = value.address ?? '';
+      emergencyContactController.text = value.emergencyContact ?? '';
+      emergencyContactController2.text = value.emergencyContact2 ?? '';
+      bloodGroupController.text = value.bloodGroup ?? '';
+      genderController.text = value.gender ?? '';
       update();
     }).onError((error, stackTrace) {
-      if (!Get.isRegistered<EditProfileController>()) {
-        return;
-      }
-      customLoader.hide();
       toast(error.toString());
-      String errorMessage = NetworkExceptions.getDioException(error);
-      print("Error during user profile API call: $error");
-      print("StackTrace: $stackTrace");
-      toast(errorMessage);
     });
   }
   Future<void> hitApiToUpdateProfileLogo() async {

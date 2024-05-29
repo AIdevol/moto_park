@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import 'package:moto_park/pages/AddVehicle/binding/addvehicle_binding.dart';
-import 'package:moto_park/pages/AddVehicle/binding/deleteVehcle_binding.dart';
 import 'package:moto_park/pages/AddVehicle/binding/showvehicles_binding.dart';
 import 'package:moto_park/pages/AddVehicle/presentation/view/Add_vehicle_screen.dart';
 import 'package:moto_park/pages/Authentication/binding/binding.dart';
@@ -16,17 +15,13 @@ import 'package:moto_park/pages/Authentication/presentation/views/reset_pass_scr
 import 'package:moto_park/pages/Authentication/presentation/views/subscription_screen.dart';
 import 'package:moto_park/pages/Notification/binding/notification_biniding.dart';
 import 'package:moto_park/pages/Notification/notification.dart';
+import 'package:moto_park/pages/home/bindings/home_binding.dart';
 import 'package:moto_park/pages/home/presentation/view/home_screen.dart';
-import 'package:moto_park/pages/home/presentation/view/widget_test.dart';
-import 'package:moto_park/pages/home/presentation/widget/section_pages/bindings/help_biniding.dart';
-import 'package:moto_park/pages/home/presentation/widget/section_pages/help_center.dart';
-import 'package:moto_park/pages/home/sheets/deleteVehicle.dart';
 import 'package:moto_park/pages/home/sheets/details_Updated.dart';
-import 'package:moto_park/pages/home/sheets/savedDocs.dart';
-import 'package:moto_park/pages/home/sheets/sheet_controller/details_update_controller.dart';
 import 'package:moto_park/pages/splash/binding/binding.dart';
 import 'package:moto_park/pages/splash/presentation/views/splash_screen.dart';
-import 'package:moto_park/response_model/vehical_list_model.dart';
+import '../pages/Authentication/binding/QRBinding.dart';
+import '../pages/Authentication/binding/subscription_bining.dart';
 import 'navigation.dart';
 
 class AppPages {
@@ -44,7 +39,7 @@ class AppPages {
     ),
     GetPage(
       name: AppRoutes.homeScreen,
-      binding: AuthenticationBinding(),
+      binding:HomeBinding(),
       page: () => HomeScreen(),
     ),
     GetPage(
@@ -74,12 +69,12 @@ class AppPages {
     ),
     GetPage(
       name: AppRoutes.qrScreen,
-      binding: AuthenticationBinding(),
+      binding: QRBinding(),
       page: () => ScanQrScreen(),
     ),
     GetPage(
       name: AppRoutes.subscriptionScreen,
-      binding: AuthenticationBinding(),
+      binding: SubscriptionBinding(),
       page: () => SubscriptionScreen(),
     ),
     GetPage(
@@ -102,7 +97,7 @@ class AppPages {
         page: () => MyNotifications()),
     GetPage(
         name: AppRoutes.QrCodeInform,
-        binding: AuthenticationBinding(),
+        binding:QRBinding(),
         page: () => QrScreenUi()),
     // GetPage(
     //     name: AppRoutes.deleteVehicle,

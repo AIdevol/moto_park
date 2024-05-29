@@ -1,4 +1,5 @@
 import 'package:moto_park/main.dart';
+import 'package:moto_park/response_model/register_response_model.dart';
 
 const String isFirstTime = 'isFirstTime';
 const String isSubscribed = 'isSubscribed';
@@ -25,6 +26,8 @@ setRememberData({required String email, required String password}) {
   storage.write(emailKey, email);
   storage.write(passwordKey, password);
 }
+
+
 
 removeRememberData() {
   storage.remove(emailKey);

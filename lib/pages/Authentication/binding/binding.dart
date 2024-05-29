@@ -25,13 +25,10 @@ class AuthenticationBinding extends Bindings {
     Get.lazyPut<OtpFieldController>(() => OtpFieldController());
     Get.lazyPut<ChangePasswordController>(() => ChangePasswordController());
     Get.lazyPut<ForgotPassController>(() => ForgotPassController());
-    Get.lazyPut<QrCodeController>(() => QrCodeController());
-    Get.lazyPut<SubscriptionScreenController>(
-        () => SubscriptionScreenController());
-    Get.lazyPut<PaymentController>(() => PaymentController());
-    Get.lazyPut<HomeController>(() => HomeController());
     // Get.lazyPut<ShowVehicleController>(() => ShowVehicleController());
-    Get.lazyPut<NotificationController>(() => NotificationController());
-    Get.lazyPut<QrScreenController>(() => QrScreenController());
   }
 }
+
+
+
+
