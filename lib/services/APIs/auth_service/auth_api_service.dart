@@ -167,7 +167,6 @@ class AuthenticationApiService extends GetxService
       return Future.error(NetworkExceptions.getDioException(e));
     }
   }
-
   Future<UserDetails> getUserDetailsApiCall(userid) async {
     try {
       final response = await dioClient!.get(
@@ -177,6 +176,18 @@ class AuthenticationApiService extends GetxService
       throw NetworkExceptions.getDioException(e);
     }
   }
+
+  // Future<UserDetails> getUserDetailsApiCall(read) async {
+  //   try {
+  //     final response = await dioClient!.get(
+  //         ApiEnd.userdetailsEnd,options: Options(
+  //       headers: {'Authorization': 'Bearer ${await storage.read(LOCALKEY_token)}'},
+  //     ),  );
+  //     return UserDetails.fromJson(response);
+  //   } catch (e) {
+  //     throw NetworkExceptions.getDioException(e);
+  //   }
+  // }
 
 // --------------------------------------------------------User details deletion---------------
   Future<void> deleteAccount() async {
@@ -241,7 +252,7 @@ class AuthenticationApiService extends GetxService
 
   // Future<SubscCardModel>getsubscriptionApicall( {Map<String, dynamic>? dataBody})async{
   //   try{
-  //     final response = await dioClient!.get(ApiEnd.subscriptionsEnd, data: dataBody);
+  //     final response = await dioClient!.get(ApiEnd.subscriptionsEnd);
   //     return response;
   //   }catch(e){
   //     return Future.error(NetworkExceptions.getDioException(e));
@@ -256,6 +267,8 @@ class AuthenticationApiService extends GetxService
       return Future.error(NetworkExceptions.getDioException(e));
     }
   }
+
+  updateUserProfileApiCall(UserDetails userDataModal) {}
   // Future<SubscCardModel>updatesubscriptionApicall( {Map<String, dynamic>? dataBody})async{
   //   try{
   //     final response = await dioClient!.put(ApiEnd.subscriptionsEnd, data: dataBody);

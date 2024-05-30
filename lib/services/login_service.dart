@@ -10,7 +10,7 @@ class GetLoginModalService extends GetxService {
   void onInit() {
     super.onInit();
   }
-  UserDetails? getUserDataModal() {
+  UserDetails? getUserDataModal({required UserDataModel}) {
     return _userDataModal;
   }
 

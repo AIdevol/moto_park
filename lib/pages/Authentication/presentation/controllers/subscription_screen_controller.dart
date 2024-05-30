@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:moto_park/constants/local_keys.dart';
 import 'package:moto_park/pages/Authentication/presentation/views/subscription_screen.dart';
+import 'package:moto_park/utilities/custom_flashbar.dart';
 
 import '../../../../main.dart';
+// import '../../../../response_model/subscription_data_model.dart';
 import '../../../../services/APIs/auth_service/auth_api_service.dart';
 
 class SubscriptionScreenController extends GetxController{
@@ -25,15 +28,24 @@ class SubscriptionScreenController extends GetxController{
     super.onInit();
   }
 
-/*hitsubsubscriptionApicall()async{
-customLoader.show();
+  Future<String?> hitsubsubscriptionApicall() async {
+    customLoader.show();
     FocusManager.instance.primaryFocus?.unfocus();
-Get.find<AuthenticationApiService>()
-    .getVehicledetailsApicall()
- }*/
-
-
-
+    try {
+      SubscCardModel subscription = await Get.find<AuthenticationApiService>().addsubscriptionApicall();
+      if (subscription != null) {
+        return subscription.rupees;
+      } else {
+        toast("Error, payment is not successful");
+        return null;
+      }
+    } catch (e) {
+      toast("An error occurred: ${e.toString()}");
+      return null;
+    } finally {
+      customLoader.hide();
+    }
+  }
 }
 
 class SubscCardModel{

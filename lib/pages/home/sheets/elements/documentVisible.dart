@@ -308,7 +308,7 @@ class DocumentVisible extends StatelessWidget {
                             children: [
                               Text(
                                 'Blood Group:',
-                                style: BalooStyles.baloomediumTextStyle(color: Color(0xFF808080), size: 15),
+                                style: BalooStyles.baloomediumTextStyle(color: Color(0xFF808080), size: 18),
                               ),
                               hGap(10),
                               Text(

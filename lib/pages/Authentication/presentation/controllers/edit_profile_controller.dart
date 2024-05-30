@@ -118,6 +118,7 @@ class EditProfileController extends GetxController {
     dobFocusNode = FocusNode();
     phoneFocusNode = FocusNode();
     hitGetUserProfileAPI();
+    // updateUserDetails();
     super.onInit();
   }
 
@@ -172,68 +173,97 @@ class EditProfileController extends GetxController {
     }
   }
   // ========================================================================Update Userdetails============================================================
-  void updateUserDetails() {
-    customLoader.show();
-    FocusManager.instance.primaryFocus?.unfocus();
-
-  var requestBody = {
-     'first_name': firstNameController.text,
-     'email': emailController.text,
-     'phone': phoneController.text,
-     'date_of_birth': dobController.text,
-     'address': addressController.text,
-     'emergency_contact1': emergencyContactController.text,
-     'emergency_contact2': emergencyContactController2.text,
-     'blood_group': bloodGroupController.text,
-     'gender': genderController.text,
-   };
-
-    Get.find<AuthenticationApiService>()
-        .updateUserDetailsApiCall(userDetails?.id??'', requestBody)
-        .then((value) async {
-      customLoader.hide();
-
-      toast("User details updated successfully");
-      update();
-    }).catchError((error) {
-      if (!Get.isRegistered<EditProfileController>()) {
-        return;
-      }
-      customLoader.hide();
-      toast(error.toString());
-      String errorMessage = NetworkExceptions.getDioException(error);
-      print("Error during update profile API call: $error");
-      toast(errorMessage);
-    });
-  }
-
-  // void updateUserProfile() {
-  //   UserDataModal userDataModal = Get.find<GetLoginModalService>().getUserDataModal();
+  // void updateUserDetails() {
+  //   customLoader.show();
+  //   FocusManager.instance.primaryFocus?.unfocus();
   //
-  //   userDataModal.firstName = firstNameController.text;
-  //   userDataModal.id = int.tryParse(codeController.text);
-  //   userDataModal.email = emailController.text;
-  //   userDataModal.phone = phoneController.text;
-  //   userDataModal.dateOfBirth = dobController.text;
-  //   userDataModal.address = addressController.text;
-  //   userDataModal.emergencyContact = emergencyContactController.text;
-  //   userDataModal.emergencyContact2 = emergencyContactController2.text;
-  //   userDataModal.bloodGroup = bloodGroupController.text;
-  //   userDataModal.gender = genderController.text;
+  // var requestBody = {
+  //    'first_name': firstNameController.text,
+  //    'email': emailController.text,
+  //    'phone': phoneController.text,
+  //    'date_of_birth': dobController.text,
+  //    'address': addressController.text,
+  //    'emergency_contact1': emergencyContactController.text,
+  //    'emergency_contact2': emergencyContactController2.text,
+  //    'blood_group': bloodGroupController.text,
+  //    'gender': genderController.text,
+  //  };
   //
   //   Get.find<AuthenticationApiService>()
-  //       .updateUserProfileApiCall(userDataModal)
-  //       .then((value) {
-  //     Get.find<GetLoginModalService>().setUserDataModal(userDataModal: value);
-  //     toast('Profile updated successfully');
-  //   }).onError((error, stackTrace) {
+  //       .updateUserDetailsApiCall(userDetails?.id??'', requestBody)
+  //       .then((value) async {
+  //     customLoader.hide();
+  //
+  //     toast("User details updated successfully");
+  //     update();
+  //   }).catchError((error) {
+  //     if (!Get.isRegistered<EditProfileController>()) {
+  //       return;
+  //     }
+  //     customLoader.hide();
   //     toast(error.toString());
+  //     String errorMessage = NetworkExceptions.getDioException(error);
+  //     print("Error during update profile API call: $error");
+  //     toast(errorMessage);
   //   });
   // }
+  /*void updateUserProfile() {
+  UserDetails? userDataModal = Get.find<GetLoginModalService>().getUserDataModal();
+
+  userDataModal?..firstName = firstNameController.text
+                ..id = int.tryParse(codeController.text)
+                ..email = emailController.text
+                ..phone = phoneController.text
+                ..dateOfBirth = dobController.text
+                ..address = addressController.text
+                ..emergencyContact = emergencyContactController.text
+                ..emergencyContact2 = emergencyContactController2.text
+                ..bloodGroup = bloodGroupController.text
+                ..gender = genderController.text;
+
+  if (userDataModal != null) {
+    Get.find<AuthenticationApiService>()
+        .updateUserProfileApiCall(userDataModal)
+        .then((value) {
+      Get.find<GetLoginModalService>().setUserDataModal(userDataModal: value);
+      toast('Profile updated successfully');
+    }).onError((error, stackTrace) {
+      toast(error.toString());
+    });
+  } else {
+    toast('Failed to update profile. User data is null.');
+  }
+}*/
+  void updateUserProfile() {
+    UserDetails? userDataModal = Get.find<GetLoginModalService>().getUserDataModal(UserDataModel:userId);
+
+    userDataModal?.firstName = firstNameController.text;
+    userDataModal?.id = int.tryParse(codeController.text);
+    userDataModal?.email = emailController.text;
+    userDataModal?.phone = phoneController.text;
+    userDataModal?.dateOfBirth = dobController.text;
+    userDataModal?.address = addressController.text;
+    userDataModal?.emergencyContact = emergencyContactController.text;
+    userDataModal?.emergencyContact2 = emergencyContactController2.text;
+    userDataModal?.bloodGroup = bloodGroupController.text;
+    userDataModal?.gender = genderController.text;
+
+    Get.find<AuthenticationApiService>()
+        .updateUserProfileApiCall(userDataModal!)
+        .then((value) {
+      Get.find<GetLoginModalService>().setUserDataModal(userDataModal: value);
+      toast('Profile updated successfully');
+    }).onError((error, stackTrace) {
+      toast(error.toString());
+    });
+  }
 
   // ==============================================================fetch UserDetails=========================================================
    hitGetUserProfileAPI() {
     FocusManager.instance.primaryFocus!.unfocus();
+    if (userId == null) {
+      throw Exception("User ID not found in storage");
+    }
     Get.find<AuthenticationApiService>()
         .getUserDetailsApiCall(storage.read(userId))
         .then((value) async {
@@ -253,9 +283,55 @@ class EditProfileController extends GetxController {
       toast(error.toString());
     });
   }
-  Future<void> hitApiToUpdateProfileLogo() async {
-// Implement your logic to update the profile logo
-//if
 
+  void hitApiToUpdateProfileLogo() {}
+
+
+  // Future<void> hitApiToUpdateProfileLogo(File imageFile) async {
+  //   final customLoader = CustomLoader();  // Assuming you have a custom loader implementation
+  //   customLoader.show();
+  //   FocusManager.instance.primaryFocus?.unfocus();
+  //
+  //   // Prepare form data with image
+  //   String fileName = imageFile.path.split('/').last;
+  //   FormData formData = FormData.fromMap({
+  //     "user_image": await MultipartFile.fromFile(imageFile.path, filename: fileName),
+  //     // Add other fields if required
+  //   });
+  //
+  //   try {
+  //     final authenticationService = Get.find<AuthenticationApiService>();
+  //     final response = await Dio().post(
+  //       "https://yourapiurl.com/update_profile_logo",
+  //       data: formData,
+  //       options: Options(headers: {
+  //         "Authorization": "Bearer YOUR_API_TOKEN",
+  //       }),
+  //     );
+  //
+  //     if (response.statusCode == 200) {
+  //       // Assuming response.data contains the necessary information
+  //       registerResponseModel = RegisterResponseModel.fromJson(response.data);
+  //       customLoader.hide();
+  //       toast(registerResponseModel.message);
+  //
+  //       // Save necessary data to local storage
+  //       storage.write(LOCALKEY_token, registerResponseModel.accessToken);
+  //       storage.write(RefreshToken, registerResponseModel.accessToken);
+  //       storage.write(LoginModelStKey, registerResponseModel.userDetails);
+  //       storage.write(isFirstTime, false);
+  //
+  //       // Navigate to the desired routes
+  //       Get.offAllNamed(AppRoutes.addVehicle);
+  //       Get.offAndToNamed(AppRoutes.homeScreen);
+  //     } else {
+  //       customLoader.hide();
+  //       Get.toNamed(AppRoutes.homeScreen);
+  //       toast("Failed to update profile image");
+  //     }
+  //   } catch (error, stackTrace) {
+  //     customLoader.hide();
+  //     Get.toNamed(AppRoutes.homeScreen);
+  //     toast(error.toString());
+  //   }
   }
-}
