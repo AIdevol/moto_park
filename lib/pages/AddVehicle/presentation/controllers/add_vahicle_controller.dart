@@ -220,7 +220,7 @@ class AddVehicleController extends GetxController {
   late FocusNode modelFocusNode;
   late FocusNode rgFocusNode;
 
-  VehicleListModel vehicleListModel = VehicleListModel();
+
 
   List<String> vehicleType = [
     "Auto",
@@ -260,27 +260,23 @@ class AddVehicleController extends GetxController {
       customLoader.show();
       FocusManager.instance.primaryFocus?.unfocus();
 
-      var loginReq = {
+      final loginReq = {
         "model_number": modelController.text,
         "registration_number": registrationNumberController.text,
         "vehicle_type": dropDownValue,
         "images": '',
-        "user": userId, // Replace with the actual user ID or token
+        "user": userId,
       };
 
       Get.find<AuthenticationApiService>()
-          .addVehicledetailsApicall(dataBody: loginReq)
-          .then((value) {
-        vehicleListModel = value;
+          .addVehicledetailsApicall(userId, dataBody: loginReq)
+          .then((vehicleListModel) {
+        toast(vehicleListModel.id?.toString() ?? 'Failed to get vehicle ID');
         customLoader.hide();
-        // Handle the successful response
         toast("Vehicle added successfully");
-        // Get.snackbar("Success", "Vehicle added successfully",
-        //     snackPosition: SnackPosition.TOP);
-      }).onError((error, stackTrace) {
+      }).catchError((error) {
         customLoader.hide();
-        toast(error.toString());
-        // Get.snackbar("Error", error.toString(), snackPosition: SnackPosition.TOP);
+        toast('Error occurred: $error');
       });
     }
   }

@@ -229,7 +229,7 @@ class AuthenticationApiService extends GetxService
     }
     }
 
-  Future<VehicleListModel>addVehicledetailsApicall(
+  Future<VehicleListModel>addVehicledetailsApicall(userid,
       {Map<String, dynamic>? dataBody}) async {
     try {
       final response = await dioClient!.post(ApiEnd.addVehicleEnd, data: dataBody);
@@ -239,16 +239,16 @@ class AuthenticationApiService extends GetxService
     }
   }
 
-  Future<VehicleListModel> getVehicledetailsApicall({
+  /*Future<VehicleListModel> getVehicledetailsApicall({
     Map<String, dynamic>? dataBody,
   }) async {
     try {
-      final response = await dioClient!.post(ApiEnd.addVehicleEnd, data: dataBody);
+      final response = await dioClient!.get(ApiEnd.addVehicleEnd, data: dataBody);
       return VehicleListModel.fromJson(response.data);
     }catch (e) {
       return Future.error(NetworkExceptions.getDioException(e));
     }
-  }
+  }*/
 
   // Future<SubscCardModel>getsubscriptionApicall( {Map<String, dynamic>? dataBody})async{
   //   try{

@@ -22,7 +22,7 @@
 //     user = json['user'];
 //   }
 //
-//   get accessToken => null;
+//
 //
 //
 //   Map<String, dynamic> toJson() {

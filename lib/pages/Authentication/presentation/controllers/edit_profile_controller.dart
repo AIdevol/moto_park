@@ -62,6 +62,8 @@ class EditProfileController extends GetxController {
 
   String? idIs;
 
+
+
   // final UserDetails = "";
   @override
   void onClose() {
@@ -261,9 +263,7 @@ class EditProfileController extends GetxController {
   // ==============================================================fetch UserDetails=========================================================
    hitGetUserProfileAPI() {
     FocusManager.instance.primaryFocus!.unfocus();
-    if (userId == null) {
-      throw Exception("User ID not found in storage");
-    }
+
     Get.find<AuthenticationApiService>()
         .getUserDetailsApiCall(storage.read(userId))
         .then((value) async {
