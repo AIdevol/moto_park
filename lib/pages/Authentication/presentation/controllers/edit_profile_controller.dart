@@ -64,6 +64,7 @@ class EditProfileController extends GetxController {
 
 
 
+
   // final UserDetails = "";
   @override
   void onClose() {
@@ -265,7 +266,7 @@ class EditProfileController extends GetxController {
     FocusManager.instance.primaryFocus!.unfocus();
 
     Get.find<AuthenticationApiService>()
-        .getUserDetailsApiCall(storage.read(userId))
+        .getUserDetailsApiCall(LOCALKEY_token)
         .then((value) async {
       Get.find<GetLoginModalService>().setUserDataModal(userDataModal: value);
       firstNameController.text = value.firstName ?? '';

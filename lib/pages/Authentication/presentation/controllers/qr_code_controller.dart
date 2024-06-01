@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:moto_park/services/APIs/auth_service/auth_api_service.dart';
+import 'package:moto_park/utilities/custom_flashbar.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:scan/scan.dart';
 import 'package:moto_park/navigation/navigation.dart';
@@ -11,7 +13,7 @@ class QrCodeController extends SuperController{
   Barcode? result;
   QRViewController? qrViewController;
   ScanController controller = ScanController();
-
+  bool isVerifiedQr = true;
   bool isLightOn = false;
 
   File? galleyPath;
@@ -28,18 +30,28 @@ class QrCodeController extends SuperController{
 
   void onQRViewCreated(QRViewController controller) {
     qrViewController = controller;
-    controller.scannedDataStream.listen((scanData) {
-        result = scanData;
+    controller.scannedDataStream.listen((scanData) async {
+      result = scanData;
+      bool isSubscribed = await checkSubscription(scanData.code);
+
+      if (isSubscribed) {
+        toast("Already have subscription on this QR code");
+        Get.back();
+      } else {
+        Get.toNamed(AppRoutes.subscriptionScreen, arguments: {"result": result});
         update();
-        Get.toNamed(AppRoutes.subscriptionScreen,arguments: {"result":result});
+        Get.offAllNamed(AppRoutes.homeScreen);
         if (Platform.isAndroid) {
           qrViewController!.pauseCamera();
         } else if (Platform.isIOS) {
           qrViewController!.resumeCamera();
         }
         Get.forceAppUpdate();
+      }
     });
   }
+
+
 
   @override
   void dispose() {
@@ -73,12 +85,30 @@ class QrCodeController extends SuperController{
   void onResumed() {
     // TODO: implement onResumed
   }
-  
+
   @override
   void onHidden() {
     // TODO: implement onHidden
   }
+
+  Future<bool> checkSubscription(scanData) async {
+    try {
+      bool isSubscribed = await Get.find<AuthenticationApiService>().checkSubscriptions(scanData);
+      return isSubscribed;
+    } catch (e) {
+      toast(e.toString());
+      return false;
+    }
+  }
+
+
+
+
 }
+
+  // saveVehicleDetails(vehicleDetails) {}
+
+
 
 
 

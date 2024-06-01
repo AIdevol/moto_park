@@ -7,6 +7,7 @@ import 'package:moto_park/main.dart';
 import 'package:moto_park/response_model/register_response_model.dart';
 import 'package:moto_park/response_model/verify_contact_res_model.dart';
 import 'package:moto_park/services/APIs/api_ends.dart';
+import 'package:qr_code_scanner/qr_code_scanner.dart';
 import '../../../pages/Authentication/presentation/controllers/subscription_screen_controller.dart';
 import '../../../response_model/vehical_list_model.dart';
 import '../../network_exception.dart';
@@ -167,12 +168,25 @@ class AuthenticationApiService extends GetxService
       return Future.error(NetworkExceptions.getDioException(e));
     }
   }
-  Future<UserDetails> getUserDetailsApiCall(userid) async {
+
+
+  Future<UserDetails> getUserDetailsApiCall(String LOCALKEY_token) async {
     try {
-      final response = await dioClient!.get(
-          "${ApiEnd.userdetailsEnd}/$userid/", skipAuth: false );
-      return UserDetails.fromJson(response);
+      final url = ApiEnd.userdetailsEnd;
+      print("Requesting URL: $url with token: $LOCALKEY_token");
+
+      final response = await DioClient.instance.get(
+        url,
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $LOCALKEY_token',
+            'Content-Type': 'application/json',
+          },
+        ),
+      );
+      return UserDetails.fromJson(response.data);
     } catch (e) {
+      print("Error: ${e.toString()}");
       throw NetworkExceptions.getDioException(e);
     }
   }
@@ -293,6 +307,24 @@ class AuthenticationApiService extends GetxService
   //     return Future.error(NetworkExceptions.getDioException(e));
   //   }
   // }
+
+  Future<bool>checkSubscriptions(String scanData)async{
+    try{
+      final response = await dioClient!.get(ApiEnd.subscriptionsEnd);
+      return response;
+    }catch(e){
+      return Future.error(NetworkExceptions.getDioException(e));
+    }
+  }
+
+  Future<bool>saveVehicleDetails(Map VehicleListModel)async{
+    try{
+      final response = await dioClient!.post(ApiEnd.addVehicleEnd);
+      return response;
+    }catch(e){
+      return Future.error(NetworkExceptions.getDioException(e));
+    }
+  }
   }
 
 
