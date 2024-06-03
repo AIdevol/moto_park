@@ -90,7 +90,8 @@ class DioClient {
       Options? options,
       CancelToken? cancelToken,
       ProgressCallback? onReceiveProgress,
-      bool? skipAuth}) async {
+      bool? skipAuth = false
+      }) async {
     try {
       if (skipAuth == false) {
         var token = await storage.read(LOCALKEY_token);

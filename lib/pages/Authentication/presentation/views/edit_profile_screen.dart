@@ -160,10 +160,16 @@ class EditProfileScreen extends GetView<EditProfileController> {
                           onTap: () {
                             if (formGlobalKeyEdit.currentState?.validate() ??
                                 false) {
-                              /*Get.toNamed(AppRoutes.mainScreen, arguments: {
-                                    'profile': controller.profileImg
-                                  });*/
-                              // controller.updateUserDetails();
+                              Get.toNamed(AppRoutes.editProfile, arguments: {
+                                'profile': controller.profileImg
+                              });/*?.then((_){
+                                Get.find<EditProfileController>().updateUserProfile();
+
+                                controller.hitGetUserProfileAPI();
+                              });*/
+                              Get.find<EditProfileController>().updateUserProfile();
+                              print("Button tapped...");
+
                             }
                           },
                           name: 'Update',
@@ -326,13 +332,14 @@ class EditProfileScreen extends GetView<EditProfileController> {
                           vGap(30),
                           GradientButton(
                             onTap: () {
+                              print("Button tapped...");
                               if (formGlobalKeyEdit.currentState?.validate() ??
                                   false) {
                                 Get.toNamed(AppRoutes.editProfile, arguments: {
                                   'profile': controller.profileImg
                                 })?.then((_) {
                                   // This code block executes after returning from the editProfile screen
-                                  // Get.find<EditProfileController>().updateUserDetails();
+                                  // Get.find<EditProfileController>().updateUserProfile();
 
                                   // controller.hitGetUserProfileAPI();
                                 });

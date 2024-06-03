@@ -229,6 +229,7 @@ import 'package:moto_park/pages/home/sheets/map_location.dart';
 import 'package:moto_park/pages/home/sheets/savedDocs.dart';
 import 'package:moto_park/services/APIs/auth_service/auth_api_service.dart';
 import 'package:moto_park/utilities/custom_dialogue.dart';
+import 'package:moto_park/utilities/custom_flashbar.dart';
 import 'package:moto_park/utilities/google_font_text_style.dart';
 
 class HomeController extends GetxController
@@ -338,9 +339,30 @@ class HomeController extends GetxController
 
 
  void hitApiToLogout(){
-    Get.find<AuthenticationApiService>().logoutApiCall().then((val){
-      print(val);
-    });
-
-  }
-}
+   customLoader.show();
+   Get.find<AuthenticationApiService>()
+       .logoutApiCall()
+       .then((value) {
+     customLoader.hide();
+     storage.remove(LOCALKEY_token);
+     storage.remove(userId);
+     storage.remove(RefreshToken);
+     storage.remove(isFirstTime);
+     print("Logged out successfully");
+     // Get.offAllNamed(AppRoutes.login);
+     if (storage.remove(isVerifiedQr) == true &&
+         (storage.remove(isSubscribed) == true)) {
+       Get.toNamed(AppRoutes.login);
+       customLoader.hide();
+     } else {
+       // Get.toNamed(AppRoutes.qrScreen);
+       Get.toNamed(AppRoutes.login
+       );
+       customLoader.hide();
+     }
+     update();
+   }).onError((error, stackTrace) {
+     customLoader.hide();
+     toast(error.toString());
+   });
+}}

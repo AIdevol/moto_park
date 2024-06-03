@@ -69,6 +69,10 @@ class AuthenticationApiService extends GetxService
   Future<RegisterResponseModel> logoutApiCall(
       {Map<String, dynamic>? dataBody}) async {
     try {
+      final String? accessToken = await storage.read(LOCALKEY_token);
+      final String? refreshToken = await storage.read(RefreshToken);
+      dataBody ??= {};
+      dataBody['refresh_token'] = refreshToken;
       final response = await dioClient?.post(
         ApiEnd.logoutEnd,
         data: dataBody,
@@ -81,6 +85,25 @@ class AuthenticationApiService extends GetxService
       return Future.error(NetworkExceptions.getDioException(e));
     }
   }
+  // Future<RegisterResponseModel> logoutApiCall(String LOCALKEY_token) async {
+  //
+  //   try {
+  //     await storage.remove(LOCALKEY_token);
+  //     await dioClient?.post(
+  //       ApiEnd.logoutEnd,
+  //       options: Options(
+  //         headers: {'Authorization': 'Bearer ${await storage.read(LOCALKEY_token)}'},
+  //       ),
+  //     );
+  //
+  //     print('User logged out successfully.');
+  //   } catch (e) {
+  //     // Handle any errors that occur during the logout process
+  //     print('Error during logout: $e');
+  //     throw NetworkExceptions.getDioException(e);
+  //   }
+  // }
+
 
   /*===================================================================== Otp API Call  ==========================================================*/
   @override
@@ -136,7 +159,8 @@ class AuthenticationApiService extends GetxService
       {Map<String, dynamic>? dataBody}) async {
     try {
       final response =
-          await dioClient!.post(ApiEnd.resetPassEnd, data: dataBody, options: Options(
+          await dioClient!.post(
+        ApiEnd.resetPassEnd, data: dataBody, options: Options(
             headers: {'Authorization': 'Bearer ${await storage.read(LOCALKEY_token)}'},
           ),);
       return RegisterResponseModel.fromJson(response);
@@ -172,36 +196,19 @@ class AuthenticationApiService extends GetxService
 
   Future<UserDetails> getUserDetailsApiCall(String LOCALKEY_token) async {
     try {
-      final url = ApiEnd.userdetailsEnd;
-      print("Requesting URL: $url with token: $LOCALKEY_token");
+      final token = await storage.read(LOCALKEY_token);
+      print('Token: $token');
+      final response = await dioClient!.get(
 
-      final response = await DioClient.instance.get(
-        url,
-        options: Options(
-          headers: {
-            'Authorization': 'Bearer $LOCALKEY_token',
-            'Content-Type': 'application/json',
-          },
-        ),
+          ApiEnd.userdetailsEnd,options: Options(
+        headers: {'Authorization': 'Bearer ${await storage.read(LOCALKEY_token)}'},
+      ),
       );
-      return UserDetails.fromJson(response.data);
+      return UserDetails.fromJson(response);
     } catch (e) {
-      print("Error: ${e.toString()}");
       throw NetworkExceptions.getDioException(e);
     }
   }
-
-  // Future<UserDetails> getUserDetailsApiCall(read) async {
-  //   try {
-  //     final response = await dioClient!.get(
-  //         ApiEnd.userdetailsEnd,options: Options(
-  //       headers: {'Authorization': 'Bearer ${await storage.read(LOCALKEY_token)}'},
-  //     ),  );
-  //     return UserDetails.fromJson(response);
-  //   } catch (e) {
-  //     throw NetworkExceptions.getDioException(e);
-  //   }
-  // }
 
 // --------------------------------------------------------User details deletion---------------
   Future<void> deleteAccount() async {
@@ -232,10 +239,10 @@ class AuthenticationApiService extends GetxService
     }
   }
 
-  Future<Map<String, dynamic>> updateUserDetailsApiCall( userid, reqeuestBody) async {
+  Future<Map<String, dynamic>> updateUserDetailsApiCall(String LOCALKEY_token, UserDetails updatedUserDetails) async {
     try {
       final response = await dioClient!.put(
-           "${ApiEnd.userdetailsEnd}/$userid/" ,options: Options(
+           ApiEnd.userdetailsEnd,options: Options(
             headers: {'Authorization': 'Bearer ${await storage.read(LOCALKEY_token)}'}) );
       return response;
     }catch(e) {
@@ -323,6 +330,15 @@ class AuthenticationApiService extends GetxService
       return response;
     }catch(e){
       return Future.error(NetworkExceptions.getDioException(e));
+    }
+  }
+
+  Future<String>fetchPhoneNumber(String scannedData)async{
+    try{
+      final responseBody = await dioClient!.post("url", data: {'data': scannedData});
+      return responseBody.data['phonenumber'];
+    }catch(err){
+      return Future.error(NetworkExceptions.getDioException(err));
     }
   }
   }

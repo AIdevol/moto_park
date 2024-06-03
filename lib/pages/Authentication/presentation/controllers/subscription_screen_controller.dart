@@ -33,13 +33,8 @@ class SubscriptionScreenController extends GetxController{
     FocusManager.instance.primaryFocus?.unfocus();
     try {
       SubscCardModel subscription = await Get.find<AuthenticationApiService>().addsubscriptionApicall();
-      if (subscription != null) {
-        return subscription.rupees;
-      } else {
-        toast("Error, payment is not successful");
-        return null;
-      }
-    } catch (e) {
+      return subscription.rupees;
+        } catch (e) {
       toast("An error occurred: ${e.toString()}");
       return null;
     } finally {

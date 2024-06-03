@@ -176,40 +176,42 @@ class EditProfileController extends GetxController {
     }
   }
   // ========================================================================Update Userdetails============================================================
-  // void updateUserDetails() {
-  //   customLoader.show();
-  //   FocusManager.instance.primaryFocus?.unfocus();
-  //
-  // var requestBody = {
-  //    'first_name': firstNameController.text,
-  //    'email': emailController.text,
-  //    'phone': phoneController.text,
-  //    'date_of_birth': dobController.text,
-  //    'address': addressController.text,
-  //    'emergency_contact1': emergencyContactController.text,
-  //    'emergency_contact2': emergencyContactController2.text,
-  //    'blood_group': bloodGroupController.text,
-  //    'gender': genderController.text,
-  //  };
-  //
-  //   Get.find<AuthenticationApiService>()
-  //       .updateUserDetailsApiCall(userDetails?.id??'', requestBody)
-  //       .then((value) async {
-  //     customLoader.hide();
-  //
-  //     toast("User details updated successfully");
-  //     update();
-  //   }).catchError((error) {
-  //     if (!Get.isRegistered<EditProfileController>()) {
-  //       return;
-  //     }
-  //     customLoader.hide();
-  //     toast(error.toString());
-  //     String errorMessage = NetworkExceptions.getDioException(error);
-  //     print("Error during update profile API call: $error");
-  //     toast(errorMessage);
-  //   });
-  // }
+  void updateUserProfile() {
+    customLoader.show();
+    FocusManager.instance.primaryFocus?.unfocus();
+
+    UserDetails updatedUserDetails = UserDetails(
+      firstName: firstNameController.text,
+      email: emailController.text,
+      phone: phoneController.text,
+      dateOfBirth: dobController.text,
+      address: addressController.text,
+      emergencyContact: emergencyContactController.text,
+      emergencyContact2: emergencyContactController2.text,
+      bloodGroup: bloodGroupController.text,
+      gender: genderController.text,
+    );
+
+    Get.find<AuthenticationApiService>()
+        .updateUserDetailsApiCall(LOCALKEY_token, updatedUserDetails)
+        .then((value) async {
+      Get.find<GetLoginModalService>().setUserDataModal(userDataModal: updatedUserDetails);
+      customLoader.hide();
+      toast("User details updated successfully");
+      update();
+    })
+        .catchError((error) {
+      if (!Get.isRegistered<EditProfileController>()) {
+        return;
+      }
+      customLoader.hide();
+      toast(error.toString());
+      String errorMessage = NetworkExceptions.getDioException(error);
+      print("Error during update profile API call: $error");
+      toast(errorMessage);
+    });
+  }
+
   /*void updateUserProfile() {
   UserDetails? userDataModal = Get.find<GetLoginModalService>().getUserDataModal();
 
@@ -237,29 +239,36 @@ class EditProfileController extends GetxController {
     toast('Failed to update profile. User data is null.');
   }
 }*/
-  void updateUserProfile() {
-    UserDetails? userDataModal = Get.find<GetLoginModalService>().getUserDataModal(UserDataModel:userId);
+  // hitUpdateUserProfileAPI() {
+  //   FocusManager.instance.primaryFocus!.unfocus();
+  //
+  //   // Create an instance of the user data model with updated values
+  //   var updatedUserData = UserDataModal(
+  //     firstName: firstNameController.text,
+  //     id: int.tryParse(codeController.text),
+  //     email: emailController.text,
+  //     phone: phoneController.text,
+  //     dateOfBirth: dobController.text,
+  //     address: addressController.text,
+  //     emergencyContact: emergencyContactController.text,
+  //     emergencyContact2: emergencyContactController2.text,
+  //     bloodGroup: bloodGroupController.text,
+  //     gender: genderController.text,
+  //   );
+  //
+  //   // Call the updateUserProfile API
+  //   Get.find<AuthenticationApiService>()
+  //       .updateUserProfileApiCall(LOCALKEY_token, updatedUserData)
+  //       .then((value) async {
+  //     // Update the user data modal with the new values
+  //     Get.find<GetLoginModalService>().setUserDataModal(userDataModal: value);
+  //     toast("Profile updated successfully");
+  //     update();
+  //   }).onError((error, stackTrace) {
+  //     toast(error.toString());
+  //   });
+  // }
 
-    userDataModal?.firstName = firstNameController.text;
-    userDataModal?.id = int.tryParse(codeController.text);
-    userDataModal?.email = emailController.text;
-    userDataModal?.phone = phoneController.text;
-    userDataModal?.dateOfBirth = dobController.text;
-    userDataModal?.address = addressController.text;
-    userDataModal?.emergencyContact = emergencyContactController.text;
-    userDataModal?.emergencyContact2 = emergencyContactController2.text;
-    userDataModal?.bloodGroup = bloodGroupController.text;
-    userDataModal?.gender = genderController.text;
-
-    Get.find<AuthenticationApiService>()
-        .updateUserProfileApiCall(userDataModal!)
-        .then((value) {
-      Get.find<GetLoginModalService>().setUserDataModal(userDataModal: value);
-      toast('Profile updated successfully');
-    }).onError((error, stackTrace) {
-      toast(error.toString());
-    });
-  }
 
   // ==============================================================fetch UserDetails=========================================================
    hitGetUserProfileAPI() {

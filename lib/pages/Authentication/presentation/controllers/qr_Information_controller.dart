@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:moto_park/constants/color_constants.dart';
+import 'package:moto_park/services/APIs/auth_service/auth_api_service.dart';
+import 'package:moto_park/utilities/custom_flashbar.dart';
 import 'package:moto_park/utilities/google_font_text_style.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:scan/scan.dart';
@@ -36,15 +38,25 @@ class QrScreenController extends GetxController {
     });
   }
 
-  void handleScannedData(String scannedData) {
-    List<String> parts = scannedData.split(':');
-    if (parts.length == 2) {
-      String owner = parts[0];
-      String phoneNumber = parts[1];
-      showContactDialog(owner, phoneNumber);
-    } else {
-      Get.snackbar("Error", "Invalid QR code format");
-    }
+   handleScannedData(String scannedData) async{
+    Get.find<AuthenticationApiService>().fetchPhoneNumber(scannedData).then((Value){
+      List<String> parts= scannedData.split(':');
+      if (parts.length == 2){
+        String owner = parts[0];
+        String phoneNumber = parts[1];
+        showContactDialog(owner, phoneNumber);
+      }else{
+        toast("This qr is invalid, kindly scanned valid qr");
+      }
+    });
+    // List<String> parts = scannedData.split(':');
+    // if (parts.length == 2) {
+    //   String owner = parts[0];
+    //   String phoneNumber = parts[1];
+    //   showContactDialog(owner, phoneNumber);
+    // } else {
+    //   Get.snackbar("Error", "Invalid QR code format");
+    // }
   }
 
   Future<void> showContactDialog(String owner, String phoneNumber) async {
