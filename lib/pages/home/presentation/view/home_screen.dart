@@ -165,6 +165,8 @@ class HomeScreen extends GetView<HomeController> {
 
               dkey: drawerkey,
               onLogoutTap:() =>{controller.hitApiToLogout(),},
+              ondeleteTap:() =>{controller.hitDeleteAccountApi(),},
+
         editProfileController: editProfileController,
             ),
             body: ScaffoldLayoutBuilder(

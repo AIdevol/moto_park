@@ -280,6 +280,42 @@ class DioClient {
       throw e;
     }
   }
+  Future<dynamic> delete(String uri,
+      {data,
+        Map<String, dynamic>? queryParameters,
+        Options? options,
+        CancelToken? cancelToken,
+        ProgressCallback? onSendProgress,
+        ProgressCallback? onReceiveProgress,
+        bool? skipAuth}) async {
+    try {
+      if (skipAuth == false) {
+        var token = await storage.read(LOCALKEY_token);
+        debugPrint("authorization============ $token");
 
-  delete(String userdetailsEnd) {}
+        if (token != null) {
+          if (options == null) {
+            options = Options(headers: {"Authorization": "Bearer $token"});
+          }
+        }
+      }
+      var response = await _dio.delete(
+        uri,
+        data: data,
+        queryParameters: queryParameters,
+        options: options,
+        cancelToken: cancelToken,
+        // onSendProgress: onSendProgress,
+        // onReceiveProgress: onReceiveProgress,
+      );
+      return response.data;
+    } on FormatException catch (_) {
+      throw FormatException("Unable to process the data");
+    } catch (e) {
+      throw e;
+    }
+  }
+
+
+
 }

@@ -17,15 +17,19 @@ class DrawerScreen extends StatefulWidget {
   final formGlobalKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> dkey;
   final Function() onLogoutTap;
+  final Function() ondeleteTap;
   final String? userName;
   final String? phone;
   final String? email;
   final EditProfileController editProfileController;
 
+
+
   DrawerScreen({
     Key? key,
     required this.dkey,
     required this.onLogoutTap,
+    required this.ondeleteTap,
     required this.editProfileController,
     this.email,
     this.phone,
@@ -155,29 +159,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
             icon: Icons.remove_circle_outline,
             title: "Delete Account",
             onTap: () {
-              Get.defaultDialog(
-                backgroundColor: Colors.yellow,
-                title: "Delete Account",
-                titleStyle: BalooStyles.balooboldTextStyle(color: Colors.black87, size: 15),
-                content: Text(
-                  "Are you sure you want to delete account?",
-                  style: BalooStyles.baloomediumTextStyle(color: Colors.black87, size: 15),
-                ),
-                textConfirm: "Yes",
-                textCancel: "No",
-                onConfirm: () async {
-                  Get.back();
-                  try {
-                    await Get.find<AuthenticationApiService>().deleteAccount();
-                    Get.toNamed(AppRoutes.login);
-                  } catch (e) {
-                    Get.snackbar("Error", "Failed to delete account: $e");
-                  }
-                },
-                onCancel: () {
-                  Get.back();
-                },
-              );
+              showDeleteDialog();
             },
           ),
           divider(),
@@ -205,6 +187,23 @@ class _DrawerScreenState extends State<DrawerScreen> {
       textConfirm: "Yes",
       textCancel: "No",
       onConfirm: widget.onLogoutTap,
+      onCancel: () {
+        Get.back();
+      },
+    );
+  }
+  void showDeleteDialog() {
+    Get.defaultDialog(
+      backgroundColor: Colors.yellow,
+      title: "Delete Account",
+      titleStyle: BalooStyles.balooboldTextStyle(color: Colors.black87, size: 15),
+      content: Text(
+        "Are you sure want to Delete Account?",
+        style: BalooStyles.baloomediumTextStyle(color: Colors.black87, size: 15),
+      ),
+      textConfirm: "Yes",
+      textCancel: "No",
+      onConfirm: widget.ondeleteTap,
       onCancel: () {
         Get.back();
       },

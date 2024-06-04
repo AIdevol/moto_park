@@ -36,7 +36,7 @@
 //   }
 //   }
 class VehicleListModel {
-  int? id;
+  String? id;
   String? modelNumber;
   String? registrationNumber;
   String? user;

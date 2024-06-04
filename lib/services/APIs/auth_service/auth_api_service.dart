@@ -77,7 +77,7 @@ class AuthenticationApiService extends GetxService
         ApiEnd.logoutEnd,
         data: dataBody,
         options: Options(headers: {
-          "Authorization": "Bearer ${await storage.read(LOCALKEY_token)}"
+          "Authorization": "Bearer $accessToken"
         }),
       );
       return RegisterResponseModel.fromJson(response.data);
@@ -211,13 +211,21 @@ class AuthenticationApiService extends GetxService
   }
 
 // --------------------------------------------------------User details deletion---------------
-  Future<void> deleteAccount() async {
+  Future<bool> deleteAccountApiCall(String LOCALKEY_token) async {
     try {
-      final response = await dioClient?.delete(ApiEnd.userdetailsEnd);
-      if (response.statusCode == 200) {
-        return;
+      final token = await storage.read(LOCALKEY_token);
+      print('Token: $token');
+
+      final response = await dioClient!.delete(
+        ApiEnd.userdetailsEnd,
+        options: Options(
+          headers: {'Authorization': 'Bearer $token'},
+        ),
+      );
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        return true;
       } else {
-        throw Exception("Failed to delete account: ${response.statusCode}");
+        throw Exception('Failed to delete account. Status code: ${response.statusCode}');
       }
     } catch (e) {
       throw NetworkExceptions.getDioException(e);
@@ -225,17 +233,22 @@ class AuthenticationApiService extends GetxService
   }
 
 // _-------------------------------------------------vehicle deletions-----------------------
-  Future<void> deletevehicledetails() async {
+  Future<bool> deletevehicledetails(id) async {
     try {
-      final response = await dioClient?.delete(ApiEnd.addVehicleEnd);
+      final token = await storage.read(LOCALKEY_token);
+      print("token: $token");
+      final response = await dioClient?.delete("${ApiEnd.addVehicleEnd}/$id/", options: Options(
+        headers: {'Authorization': 'Bearer $token'},
+      ),);
 
-      if (response.statusCode == 200) {
-        return;
-      } else {
-        throw Exception("Failed to delete account: ${response.statusCode}");
+      if (response.statuscode >= 200 && response.statuscode < 500){
+        return true;
+      }else{
+        throw Exception("Failed to delete account. Status code:${response.statusCode}");
       }
+      return response.data;
     } catch (e) {
-      throw NetworkExceptions.getDioException(e);
+      return Future.error(NetworkExceptions.getDioException(e));
     }
   }
 

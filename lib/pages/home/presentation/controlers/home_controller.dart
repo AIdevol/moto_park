@@ -227,6 +227,7 @@ import 'package:moto_park/navigation/navigation.dart';
 // import 'package:moto_park/pages/home/sheets/deleteVehicle.dart';
 import 'package:moto_park/pages/home/sheets/map_location.dart';
 import 'package:moto_park/pages/home/sheets/savedDocs.dart';
+import 'package:moto_park/response_model/vehical_list_model.dart';
 import 'package:moto_park/services/APIs/auth_service/auth_api_service.dart';
 import 'package:moto_park/utilities/custom_dialogue.dart';
 import 'package:moto_park/utilities/custom_flashbar.dart';
@@ -242,6 +243,10 @@ class HomeController extends GetxController
     'Show Vehicle Details',
     'Delete Vehicle',
   ];
+
+  // VehicleListModel vehicleListModel = VehicleListModel;
+
+
 
   @override
   void onInit() {
@@ -320,12 +325,13 @@ class HomeController extends GetxController
           textCancel: "No",
           onConfirm: () async {
             Get.back();
-            try {
-              await Get.find<AuthenticationApiService>().deletevehicledetails();
-              Get.toNamed(AppRoutes.homeScreen);
-            } catch (e) {
-              Get.snackbar("Error", "Failed to delete vehicle details: $e");
-            }
+            // try {
+            //   await Get.find<AuthenticationApiService>().deletevehicledetails(LOCALKEY_token);
+            //   Get.toNamed(AppRoutes.homeScreen);
+            // } catch (e) {
+            //   Get.snackbar("Error", "Failed to delete vehicle details: $e");
+            // }
+            hitDeleteVehicleApi(LOCALKEY_token);
           },
           onCancel: () {
             Get.back();
@@ -350,19 +356,61 @@ class HomeController extends GetxController
      storage.remove(isFirstTime);
      print("Logged out successfully");
      // Get.offAllNamed(AppRoutes.login);
-     if (storage.remove(isVerifiedQr) == true &&
-         (storage.remove(isSubscribed) == true)) {
-       Get.toNamed(AppRoutes.login);
-       customLoader.hide();
-     } else {
-       // Get.toNamed(AppRoutes.qrScreen);
-       Get.toNamed(AppRoutes.login
-       );
-       customLoader.hide();
-     }
+   if(storage.read(isVerifiedQr) == false){
+     Get.toNamed(AppRoutes.qrScreen);
+   }else{
+     Get.toNamed(AppRoutes.login);
+   }
      update();
    }).onError((error, stackTrace) {
      customLoader.hide();
      toast(error.toString());
    });
-}}
+}
+  void hitDeleteAccountApi(){
+    customLoader.show();
+    Get.find<AuthenticationApiService>()
+        .deleteAccountApiCall(LOCALKEY_token)
+        .then((value) {
+      print("--------------assigning delete accorunging");
+      customLoader.hide();
+      storage.remove(LOCALKEY_token);
+      storage.remove(userId);
+      storage.remove(RefreshToken);
+      storage.remove(isFirstTime);
+      print("Delete accounting successfully");
+      // Get.offAllNamed(AppRoutes.login);
+      if(storage.read(isVerifiedQr) == false){
+        Get.toNamed(AppRoutes.qrScreen);
+      }else{
+        Get.toNamed(AppRoutes.login);
+      }
+      update();
+    }).onError((error, stackTrace) {
+      customLoader.hide();
+      toast(error.toString());
+    });
+  }
+
+  void hitDeleteVehicleApi(id){
+    customLoader.show();
+    Get.find<AuthenticationApiService>()
+        .deletevehicledetails(id)
+        .then((value) {
+      print("--------------assigning delete vehcile");
+      customLoader.hide();
+      storage.remove(id);
+      print("Delete vehicles successfully");
+      // Get.offAllNamed(AppRoutes.login);
+      if(storage.read(isVerifiedQr) == false){
+        Get.toNamed(AppRoutes.addVehicle);
+      }else{
+        Get.toNamed(AppRoutes.homeScreen);
+      }
+      update();
+    }).onError((error, stackTrace) {
+      customLoader.hide();
+      toast(error.toString());
+    });
+  }
+}
