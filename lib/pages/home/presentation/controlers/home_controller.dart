@@ -227,6 +227,7 @@ import 'package:moto_park/navigation/navigation.dart';
 // import 'package:moto_park/pages/home/sheets/deleteVehicle.dart';
 import 'package:moto_park/pages/home/sheets/map_location.dart';
 import 'package:moto_park/pages/home/sheets/savedDocs.dart';
+import 'package:moto_park/response_model/register_response_model.dart';
 import 'package:moto_park/response_model/vehical_list_model.dart';
 import 'package:moto_park/services/APIs/auth_service/auth_api_service.dart';
 import 'package:moto_park/utilities/custom_dialogue.dart';
@@ -355,12 +356,8 @@ class HomeController extends GetxController
      storage.remove(RefreshToken);
      storage.remove(isFirstTime);
      print("Logged out successfully");
-     // Get.offAllNamed(AppRoutes.login);
-   if(storage.read(isVerifiedQr) == false){
-     Get.toNamed(AppRoutes.qrScreen);
-   }else{
-     Get.toNamed(AppRoutes.login);
-   }
+     Get.offAllNamed(AppRoutes.login);
+     customLoader.hide();
      update();
    }).onError((error, stackTrace) {
      customLoader.hide();
@@ -385,7 +382,8 @@ class HomeController extends GetxController
       }else{
         Get.toNamed(AppRoutes.login);
       }
-      update();
+      Get.offAllNamed(AppRoutes.homeScreen);
+ update();
     }).onError((error, stackTrace) {
       customLoader.hide();
       toast(error.toString());

@@ -65,6 +65,27 @@ class AuthenticationApiService extends GetxService
       return Future.error(NetworkExceptions.getDioException(e));
     }
   }
+  // @override
+  // Future<RegisterResponseModel> logoutApiCall(
+  //     {Map<String, dynamic>? dataBody}) async {
+  //   try {
+  //     final String? accessToken = await storage.read(LOCALKEY_token);
+  //     final String? refreshToken = await storage.read(RefreshToken);
+  //     dataBody ??= {};
+  //     dataBody['refresh_token'] = refreshToken;
+  //     final response = await dioClient?.post(
+  //       ApiEnd.logoutEnd,
+  //       data: dataBody,
+  //       options: Options(headers: {
+  //         "Authorization": "Bearer $accessToken"
+  //       }),
+  //     );
+  //     await storage.erase();
+  //     return RegisterResponseModel.fromJson(response.data);
+  //   } catch (e) {
+  //     return Future.error(NetworkExceptions.getDioException(e));
+  //   }
+  // }
   @override
   Future<RegisterResponseModel> logoutApiCall(
       {Map<String, dynamic>? dataBody}) async {
@@ -73,18 +94,31 @@ class AuthenticationApiService extends GetxService
       final String? refreshToken = await storage.read(RefreshToken);
       dataBody ??= {};
       dataBody['refresh_token'] = refreshToken;
+
       final response = await dioClient?.post(
         ApiEnd.logoutEnd,
         data: dataBody,
         options: Options(headers: {
-          "Authorization": "Bearer $accessToken"
+          "Authorization": "Bearer $accessToken",
         }),
       );
-      return RegisterResponseModel.fromJson(response.data);
+
+      if (response != null) {
+        if (response.statusCode == 200 || response.statusCode == 205) {
+
+          await storage.erase();
+          return RegisterResponseModel.fromJson(response.data);
+        } else {
+          throw Exception("Unexpected status code: ${response.statusCode}");
+        }
+      } else {
+        throw Exception("Invalid response from server");
+      }
     } catch (e) {
       return Future.error(NetworkExceptions.getDioException(e));
     }
   }
+
   // Future<RegisterResponseModel> logoutApiCall(String LOCALKEY_token) async {
   //
   //   try {
