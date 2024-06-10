@@ -178,7 +178,7 @@ class SubscriptionScreen extends GetView<SubscriptionScreenController> {
           GradientButton(
             onTap: () {
               // if (formGlobalKey.currentState?.validate() ?? false) {
-              //   controller.hitLoginAPI();
+              //   controller.hitsubsubscriptionApicall();
               // }
 
               var options = {

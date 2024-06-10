@@ -28,19 +28,19 @@ class SubscriptionScreenController extends GetxController{
     super.onInit();
   }
 
-  Future<String?> hitsubsubscriptionApicall() async {
-    customLoader.show();
-    FocusManager.instance.primaryFocus?.unfocus();
-    try {
-      SubscCardModel subscription = await Get.find<AuthenticationApiService>().addsubscriptionApicall();
-      return subscription.rupees;
-        } catch (e) {
-      toast("An error occurred: ${e.toString()}");
-      return null;
-    } finally {
-      customLoader.hide();
-    }
-  }
+  // Future<String?> hitsubsubscriptionApicall() async {
+  //   customLoader.show();
+  //   FocusManager.instance.primaryFocus?.unfocus();
+  //   try {
+  //     SubscCardModel subscription = await Get.find<AuthenticationApiService>().addsubscriptionApicall();
+  //     return subscription.rupees;
+  //       } catch (e) {
+  //     toast("An error occurred: ${e.toString()}");
+  //     return null;
+  //   } finally {
+  //     customLoader.hide();
+  //   }
+  // }
 }
 
 class SubscCardModel{
