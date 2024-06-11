@@ -212,62 +212,6 @@ class EditProfileController extends GetxController {
     });
   }
 
-  /*void updateUserProfile() {
-  UserDetails? userDataModal = Get.find<GetLoginModalService>().getUserDataModal();
-
-  userDataModal?..firstName = firstNameController.text
-                ..id = int.tryParse(codeController.text)
-                ..email = emailController.text
-                ..phone = phoneController.text
-                ..dateOfBirth = dobController.text
-                ..address = addressController.text
-                ..emergencyContact = emergencyContactController.text
-                ..emergencyContact2 = emergencyContactController2.text
-                ..bloodGroup = bloodGroupController.text
-                ..gender = genderController.text;
-
-  if (userDataModal != null) {
-    Get.find<AuthenticationApiService>()
-        .updateUserProfileApiCall(userDataModal)
-        .then((value) {
-      Get.find<GetLoginModalService>().setUserDataModal(userDataModal: value);
-      toast('Profile updated successfully');
-    }).onError((error, stackTrace) {
-      toast(error.toString());
-    });
-  } else {
-    toast('Failed to update profile. User data is null.');
-  }
-}*/
-  // hitUpdateUserProfileAPI() {
-  //   FocusManager.instance.primaryFocus!.unfocus();
-  //
-  //   // Create an instance of the user data model with updated values
-  //   var updatedUserData = UserDataModal(
-  //     firstName: firstNameController.text,
-  //     id: int.tryParse(codeController.text),
-  //     email: emailController.text,
-  //     phone: phoneController.text,
-  //     dateOfBirth: dobController.text,
-  //     address: addressController.text,
-  //     emergencyContact: emergencyContactController.text,
-  //     emergencyContact2: emergencyContactController2.text,
-  //     bloodGroup: bloodGroupController.text,
-  //     gender: genderController.text,
-  //   );
-  //
-  //   // Call the updateUserProfile API
-  //   Get.find<AuthenticationApiService>()
-  //       .updateUserProfileApiCall(LOCALKEY_token, updatedUserData)
-  //       .then((value) async {
-  //     // Update the user data modal with the new values
-  //     Get.find<GetLoginModalService>().setUserDataModal(userDataModal: value);
-  //     toast("Profile updated successfully");
-  //     update();
-  //   }).onError((error, stackTrace) {
-  //     toast(error.toString());
-  //   });
-  // }
 
 
   // ==============================================================fetch UserDetails=========================================================
@@ -294,7 +238,9 @@ class EditProfileController extends GetxController {
     });
   }
 
-  void hitApiToUpdateProfileLogo() {}
+  void hitApiToUpdateProfileLogo() {
+     // Get.
+  }
 
 
   // Future<void> hitApiToUpdateProfileLogo(File imageFile) async {
@@ -324,13 +270,6 @@ class EditProfileController extends GetxController {
   //       registerResponseModel = RegisterResponseModel.fromJson(response.data);
   //       customLoader.hide();
   //       toast(registerResponseModel.message);
-  //
-  //       // Save necessary data to local storage
-  //       storage.write(LOCALKEY_token, registerResponseModel.accessToken);
-  //       storage.write(RefreshToken, registerResponseModel.accessToken);
-  //       storage.write(LoginModelStKey, registerResponseModel.userDetails);
-  //       storage.write(isFirstTime, false);
-  //
   //       // Navigate to the desired routes
   //       Get.offAllNamed(AppRoutes.addVehicle);
   //       Get.offAndToNamed(AppRoutes.homeScreen);

@@ -327,7 +327,7 @@ class DocumentVisible extends StatelessWidget {
                               hGap(10),
                               Text(
                                 '${controller.emergencyContactController.text}',
-                                style: BalooStyles.baloomediumTextStyle(color: blackColor, size: 15),
+                                style: BalooStyles.baloomediumTextStyle(color: blackColor, size: 14),
                               ),
                             ],
                           ),
@@ -341,7 +341,7 @@ class DocumentVisible extends StatelessWidget {
                               hGap(10),
                               Text(
                                 '${controller.emergencyContactController2.text}',
-                                style: BalooStyles.baloomediumTextStyle(color: blackColor, size: 15),
+                                style: BalooStyles.baloomediumTextStyle(color: blackColor, size: 14),
                               ),
                             ],
                           ),

@@ -39,7 +39,7 @@ class QrScreenController extends GetxController {
   }
 
    handleScannedData(String scannedData) async{
-    Get.find<AuthenticationApiService>().fetchPhoneNumber(scannedData).then((Value){
+    Get.find<AuthenticationApiService>().fetchPhoneNumber(scannedData).then((_){
       List<String> parts= scannedData.split(':');
       if (parts.length == 2){
         String owner = parts[0];

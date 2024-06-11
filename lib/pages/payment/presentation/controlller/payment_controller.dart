@@ -1,3 +1,4 @@
+// import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:moto_park/navigation/navigation.dart';
@@ -38,7 +39,16 @@ class PaymentController extends GetxController{
 
   void _handleExternalWallet(ExternalWalletResponse response) {
     // Do something when an external wallet was selected
-  }
+    // if (ExternalWalletResponse is SelectedContent){
+    //   try {
+    //     final response = await
+    //   }catch(e){
+    //
+    //
+    //   }
+    toast("External Wallet Name: $response.walletName.");
+    }
+  // }
 
 
 

@@ -218,7 +218,7 @@ class RegisterScreen extends GetView<RegisterController> {
         validator: (value) {
           return value?.isEmptyField(messageTitle: "Name");
         },
-        focusNode: controller.firsrNameFocusNode);
+        focusNode: controller.firstNameFocusNode);
   }
 
   _addressFieldView({required BuildContext context}) {
@@ -380,7 +380,7 @@ class RegisterScreen extends GetView<RegisterController> {
         textInputAction: TextInputAction.next,
         onFieldSubmitted: (String? value) {
           FocusScope.of(Get.context ?? context)
-              .requestFocus(controller.emergencyContactFocusNode2);
+              .requestFocus(controller.emergencyContactFocusNode);
         },
         validator: (value) {
           return value?.isEmptyField(messageTitle: "Enter Emergency Contact");

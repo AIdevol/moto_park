@@ -24,7 +24,7 @@ class RegisterController extends GetxController {
   late TextEditingController confirmPasswordController;
   late TextEditingController bloodGroupController;
   late TextEditingController phoneController;
-  late FocusNode firsrNameFocusNode;
+  late FocusNode firstNameFocusNode;
   late FocusNode codeFocusNode;
   late FocusNode addressFocusNode;
   late FocusNode bloodGroupFocusNode;
@@ -71,7 +71,7 @@ class RegisterController extends GetxController {
     passwordController = TextEditingController();
     phoneController = TextEditingController();
 
-    firsrNameFocusNode = FocusNode();
+    firstNameFocusNode = FocusNode();
     dobFocusNode = FocusNode();
     addressFocusNode = FocusNode();
     codeFocusNode = FocusNode();

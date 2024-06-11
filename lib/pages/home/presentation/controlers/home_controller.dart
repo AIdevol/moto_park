@@ -349,12 +349,12 @@ class HomeController extends GetxController
    customLoader.show();
    Get.find<AuthenticationApiService>()
        .logoutApiCall()
-       .then((value) {
+       .then((value) async {
      customLoader.hide();
-     storage.remove(LOCALKEY_token);
-     storage.remove(userId);
-     storage.remove(RefreshToken);
-     storage.remove(isFirstTime);
+    await storage.remove(LOCALKEY_token);
+    await storage.remove(userId);
+    await storage.remove(RefreshToken);
+    await storage.remove(isFirstTime);
      print("Logged out successfully");
      Get.offAllNamed(AppRoutes.login);
      customLoader.hide();
@@ -376,6 +376,7 @@ class HomeController extends GetxController
       storage.remove(RefreshToken);
       storage.remove(isFirstTime);
       print("Delete accounting successfully");
+
       // Get.offAllNamed(AppRoutes.login);
       if(storage.read(isVerifiedQr) == false){
         Get.toNamed(AppRoutes.qrScreen);

@@ -56,7 +56,7 @@ class CopyRights extends StatelessWidget {
         color: appColor,
         borderRadius: BorderRadius.circular(8),
       ),
-      child: InkWell(
+      child: GestureDetector(
         onTap: () {
           Get.back();
         },

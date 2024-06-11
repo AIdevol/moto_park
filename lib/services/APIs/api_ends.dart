@@ -11,5 +11,6 @@ class ApiEnd {
   static const String addVehicleEnd = "api/vehicles/";
   static const String userdetailsEnd = "api/user_details/";
   static const String subscriptionsEnd = "api/subscriptions/";
+  static const String fetchedphoneEnd= "api/call_user/";
   // static const String
 }
