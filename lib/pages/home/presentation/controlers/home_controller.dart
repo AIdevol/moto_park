@@ -356,6 +356,7 @@ class HomeController extends GetxController
     await storage.remove(RefreshToken);
     await storage.remove(isFirstTime);
      print("Logged out successfully");
+     Get.offAllNamed(AppRoutes.qrScreen);
      Get.offAllNamed(AppRoutes.login);
      customLoader.hide();
      update();

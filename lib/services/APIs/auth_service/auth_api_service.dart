@@ -82,7 +82,12 @@ class AuthenticationApiService extends GetxService
         }),
       );
       await storage.erase();
-      return RegisterResponseModel.fromJson(response.data);
+      if(response.statusCode == 205){
+        return response.data['message'];
+      }else{
+        throw Exception('Logout failed to status code: ${response.statusCode}');
+      }
+      // return RegisterResponseModel.fromJson(response.data);
     } catch (e) {
       return Future.error(NetworkExceptions.getDioException(e));
     }

@@ -188,12 +188,12 @@ class SubscriptionScreen extends GetView<SubscriptionScreenController> {
                     : controller.selectedIndex == 1
                         ? 400 * 100
                         : 370 * 100,
-                'name': 'Weboapp',
+                'name': 'Moto-Park',
                 "currency": "INR",
                 'description': 'Fine T-Shirt',
                 'prefill': {
-                  'contact': '8556972027',
-                  'email': 'muskanflutterdev@gmail.com'
+                  'contact': '6388802100',
+                  'email': 'devesh@weboappdiscovery.com'
                 }
               };
               storage.write(isSubscribed, true);

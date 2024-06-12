@@ -9,5 +9,6 @@ class QRBinding extends Bindings {
     Get.lazyPut<QrScreenController>(() => QrScreenController());
     Get.lazyPut<QrCodeController>(() => QrCodeController());
     // Get.lazyPut<ShowVehicleController>(() => ShowVehicleController());
+
   }
 }
