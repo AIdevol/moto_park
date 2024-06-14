@@ -377,8 +377,8 @@ class HomeController extends GetxController
       storage.remove(RefreshToken);
       storage.remove(isFirstTime);
       print("Delete accounting successfully");
-
-      // Get.offAllNamed(AppRoutes.login);
+      toast("Successfully!, Deleted Api");
+      Get.back();
       if(storage.read(isVerifiedQr) == false){
         Get.toNamed(AppRoutes.qrScreen);
       }else{

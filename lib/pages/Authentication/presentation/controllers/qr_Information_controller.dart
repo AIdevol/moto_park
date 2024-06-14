@@ -45,6 +45,8 @@ class QrScreenController extends GetxController {
         String owner = parts[0];
         String phoneNumber = parts[1];
         showContactDialog(owner, phoneNumber);
+        // showContactDialog(owner, phoneNumber);
+
       }else{
         toast("This qr is invalid, kindly scanned valid qr");
       }
