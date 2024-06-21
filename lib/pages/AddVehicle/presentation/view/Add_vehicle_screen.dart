@@ -24,6 +24,10 @@ class AddVehicleScreen extends GetView<AddVehicleController> {
                 child: _form(),
               ),
               GradientButton(name: "Submit", onTap: () {
+
+                if (_addVKey.currentState?.validate() ?? false) {
+                  controller.addVehicleApiCall();
+                }
                 Get.toNamed(AppRoutes.qrScreen);
               })
                   .marginOnly(bottom: 20, left: 20, right: 20),

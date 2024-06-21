@@ -209,6 +209,7 @@ import 'package:moto_park/constants/local_keys.dart';
 import 'package:moto_park/response_model/vehical_list_model.dart';
 import 'package:moto_park/services/APIs/auth_service/auth_api_service.dart';
 import 'package:moto_park/utilities/custom_flashbar.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../../../main.dart';
 
@@ -255,21 +256,30 @@ class AddVehicleController extends GetxController {
     super.onClose();
   }
 
-  void addVehicleApiCall() {
+  void addVehicleApiCall() async{
     if (_validateFields()) {
       customLoader.show();
       FocusManager.instance.primaryFocus?.unfocus();
 
+      String? userid = await storage.read(userId);
+
+      if(LOCALKEY_token == null || userid == null){
+        customLoader.hide();
+        toast('user not authenticated');
+        return;
+      }
+
       final loginReq = {
+        "brand_name": brandController.text,
         "model_number": modelController.text,
         "registration_number": registrationNumberController.text,
         "vehicle_type": dropDownValue,
         "images": '',
-        "user": userId,
+        "user": userid,
       };
 
       Get.find<AuthenticationApiService>()
-          .addVehicledetailsApicall(userId, dataBody: loginReq)
+          .addVehicledetailsApicall(LOCALKEY_token ,dataBody: loginReq)
           .then((vehicleListModel) {
         toast(vehicleListModel.id?.toString() ?? 'Failed to get vehicle ID');
         customLoader.hide();

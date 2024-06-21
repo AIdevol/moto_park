@@ -192,46 +192,46 @@
 //   }
 // }
 
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:moto_park/pages/home/sheets/sheet_controller/vehicle_delete_controller.dart';
-
-class VehicleDeletedetails extends GetView {
-  const VehicleDeletedetails({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final VehicleDeleteController controller = Get.find();
-    const int vehicleId = 1;
-    // final int vehicleId = Get.arguments;
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Delete Vehicle'),
-      ),
-      body: _onDelete(context, controller, vehicleId),
-    );
-  }
-
-  Widget _onDelete(
-      BuildContext context, VehicleDeleteController controller, int vehicleId) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            'Are you sure you want to delete vehicle with ID: $vehicleId?',
-            textAlign: TextAlign.center,
-          ),
-          SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: () {
-              controller.deleteVehicle(vehicleId);
-            },
-            child: Text('Delete'),
-          ),
-        ],
-      ),
-    );
-  }
-}
+// import 'package:flutter/material.dart';
+// import 'package:get/get.dart';
+// import 'package:moto_park/pages/home/sheets/sheet_controller/vehicle_delete_controller.dart';
+//
+// class VehicleDeletedetails extends GetView {
+//   const VehicleDeletedetails({Key? key}) : super(key: key);
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     final VehicleDeleteController controller = Get.find();
+//     const int vehicleId = 1;
+//     // final int vehicleId = Get.arguments;
+//
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text('Delete Vehicle'),
+//       ),
+//       body: _onDelete(context, controller, vehicleId),
+//     );
+//   }
+//
+//   Widget _onDelete(
+//       BuildContext context, VehicleDeleteController controller, int vehicleId) {
+//     return Center(
+//       child: Column(
+//         mainAxisAlignment: MainAxisAlignment.center,
+//         children: [
+//           Text(
+//             'Are you sure you want to delete vehicle with ID: $vehicleId?',
+//             textAlign: TextAlign.center,
+//           ),
+//           SizedBox(height: 20),
+//           ElevatedButton(
+//             onPressed: () {
+//               controller.deleteVehicle(vehicleId);
+//             },
+//             child: Text('Delete'),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }

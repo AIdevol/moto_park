@@ -93,66 +93,6 @@ class AuthenticationApiService extends GetxService
     }
   }
 
-  // @override
-  // Future<RegisterResponseModel> hitlogoutApiCall({Map<String, dynamic>? dataBody}) async {
-  //   try {
-  //     final String? accessToken = await storage.read(LOCALKEY_token);
-  //     final String? refreshToken = await storage.read(RefreshToken);
-  //     dataBody ??= {};
-  //     dataBody['refresh_token'] = refreshToken;
-  //
-  //     final response = await dioClient?.post(
-  //       ApiEnd.logoutEnd,
-  //       data: dataBody,
-  //       options: Options(headers: {
-  //         "Authorization": "Bearer $accessToken",
-  //       }),
-  //     );
-  //
-  //     if (response != null) {
-  //       if (response.statusCode == 200 || response.statusCode == 205) {
-  //         // Logout successful
-  //         await _clearUserData();
-  //         print("Logged out successfully");
-  //       } else {
-  //         throw Exception("Unexpected status code: ${response.statusCode}");
-  //       }
-  //     } else {
-  //       throw Exception("Invalid response from server");
-  //     }
-  //   } catch (e) {
-  //     return Future.error(NetworkExceptions.getDioException(e));
-  //   }
-  // }
-  //
-  // Future<void> _clearUserData() async {
-  //   await storage.remove(LOCALKEY_token);
-  //   await storage.remove(userId);
-  //   await storage.remove(RefreshToken);
-  //   await storage.remove(isFirstTime);
-  //   // Remove any other user-related data from storage
-  //   await storage.erase();
-  // }
-  // Future<RegisterResponseModel> logoutApiCall(String LOCALKEY_token) async {
-  //
-  //   try {
-  //     await storage.remove(LOCALKEY_token);
-  //     await dioClient?.post(
-  //       ApiEnd.logoutEnd,
-  //       options: Options(
-  //         headers: {'Authorization': 'Bearer ${await storage.read(LOCALKEY_token)}'},
-  //       ),
-  //     );
-  //
-  //     print('User logged out successfully.');
-  //   } catch (e) {
-  //     // Handle any errors that occur during the logout process
-  //     print('Error during logout: $e');
-  //     throw NetworkExceptions.getDioException(e);
-  //   }
-  // }
-
-
   /*===================================================================== Otp API Call  ==========================================================*/
   @override
   Future<RegisterResponseModel> otpApiCall(
@@ -303,7 +243,6 @@ class AuthenticationApiService extends GetxService
         throw Exception(
             "Failed to delete account. Status code:${response.statusCode}");
       }
-      return response.data;
     } catch (e) {
       return Future.error(NetworkExceptions.getDioException(e));
     }
@@ -323,12 +262,15 @@ class AuthenticationApiService extends GetxService
     }
   }
 
-  Future<VehicleListModel> addVehicledetailsApicall(userid,
+  Future<VehicleListModel> addVehicledetailsApicall(String LOCALKEY_token,
       {Map<String, dynamic>? dataBody}) async {
     try {
       final response = await dioClient!.post(
-          ApiEnd.addVehicleEnd, data: dataBody);
-      return VehicleListModel.fromJson(response);
+          ApiEnd.addVehicleEnd, data: dataBody, options: Options(headers: {
+            'Authorization':'Bearer ${await storage
+            .read(LOCALKEY_token)}'
+      }));
+      return VehicleListModel.fromJson(response.data);
     } catch (e) {
       return Future.error(NetworkExceptions.getDioException(e));
     }
@@ -417,6 +359,18 @@ class AuthenticationApiService extends GetxService
       return responseBody.data['phone'];
     } catch (err) {
       return Future.error(NetworkExceptions.getDioException(err));
+    }
+  }
+
+  Future<RegisterResponseModel> addprofileImage(String userImage) async{
+    try{
+      final response = await dioClient!.put("${ApiEnd.userdetailsEnd}/user_image/",options: Options(
+      headers: {
+      'Authorization': 'Bearer ${await storage.read(LOCALKEY_token)}'
+      }));
+      return response.data;
+    }catch(e){
+      return Future.error(NetworkExceptions.getDioException(e));
     }
   }
 }

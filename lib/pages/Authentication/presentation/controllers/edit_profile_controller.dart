@@ -57,10 +57,13 @@ class EditProfileController extends GetxController {
   String altCountryCodeVal = "+91";
   String profileImg = '';
   var currencyIcon;
+  late TextEditingController profileImageController;
 
   UserDetails? userDetails = UserDetails();
 
   String? idIs;
+
+  String get userImage => userImage;
 
 
 
@@ -91,6 +94,7 @@ class EditProfileController extends GetxController {
     genderControllerFocusNode.dispose();
     dobFocusNode.dispose();
     phoneFocusNode.dispose();
+    profileImageController.dispose();
     super.onClose();
   }
 
@@ -122,6 +126,8 @@ class EditProfileController extends GetxController {
     phoneFocusNode = FocusNode();
     hitGetUserProfileAPI();
     // updateUserDetails();
+    profileImageController = TextEditingController();
+
     super.onInit();
   }
 
@@ -238,8 +244,33 @@ class EditProfileController extends GetxController {
     });
   }
 
-  void hitApiToUpdateProfileLogo() {
-     // Get.
+  void hitApiToUpdateProfileLogo() async{
+     // customLoader.show();
+     // FocusManager.instance.primaryFocus!.unfocus();
+     // try{
+     //   String fileName = profileImg.split('/').last;
+     //   FormData formData = FormData.fromMap({
+     //     "user_image": await MultipartFile.fromFile(profileImg, filename: fileName),
+     //   });
+     //   final authenticationService = Get.find<AuthenticationApiService>();
+     //   final response = await authenticationService.addprofileImage(formData);
+     //   if (response.statusCode == 200) {
+     //     RegisterResponseModel registerResponseModel = RegisterResponseModel.fromJson(response.data);
+     //     customLoader.hide();
+     //     toast(registerResponseModel.message);
+     // }else{
+     //     customLoader.hide();
+     //     toast("Failed to update profile image");
+     //   }
+     // } catch (error) {
+     //   customLoader.hide();
+     //   toast(error.toString());
+     // }
+    }
+     // Get.find<AuthenticationApiService>().addprofileImage(userImage).then((_)async{
+     //   await storage.save();
+     //
+     // });
   }
 
 
@@ -283,4 +314,4 @@ class EditProfileController extends GetxController {
   //     Get.toNamed(AppRoutes.homeScreen);
   //     toast(error.toString());
   //   }
-  }
+

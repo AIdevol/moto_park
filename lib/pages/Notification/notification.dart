@@ -66,7 +66,7 @@ import 'package:moto_park/pages/Notification/notification_cotroller.dart';
 import 'package:moto_park/utilities/google_font_text_style.dart';
 import 'package:moto_park/utilities/helper_widget.dart';
 
-class MyNotifications extends StatelessWidget {
+class MyNotifications extends GetView<NotificationController> {
   const MyNotifications({Key? key});
 
   @override
