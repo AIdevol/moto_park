@@ -394,7 +394,7 @@ class HomeController extends GetxController
   void hitDeleteVehicleApi(id){
     customLoader.show();
     Get.find<AuthenticationApiService>()
-        .deletevehicledetails(id)
+        .deletevehicledetails(id, LOCALKEY_token)
         .then((value) {
       print("--------------assigning delete vehcile");
       customLoader.hide();
