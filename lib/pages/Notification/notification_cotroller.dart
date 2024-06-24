@@ -2,49 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
 class NotificationController extends GetxController {
-//   final Dio _dio = Dio(
-//     BaseOptions(
-//       baseUrl: '',
-//       connectTimeout: const Duration(milliseconds: 3000),
-//       receiveTimeout: const Duration(milliseconds: 3000),
-//     ),
-//   )..interceptors.add(Logging());
-
-//   Future<List<dynamic>> fetchNotifications() async {
-//     try {
-//       final response = await _dio.get('/notifications');
-//       return response.data;
-//     } on DioError catch (e) {
-//       print('Error fetching notifications: $e');
-//       throw e;
-//     }
-//   }
-// }
-
-// class Logging extends Interceptor {
-//   @override
-//   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-//     print('REQUEST[${options.method}] => PATH: ${options.path}');
-//     return super.onRequest(options, handler);
-//   }
-
-//   @override
-//   void onResponse(Response response, ResponseInterceptorHandler handler) {
-//     print(
-//       'RESPONSE[${response.statusCode}] => PATH: ${response.requestOptions.path}',
-//     );
-//     return super.onResponse(response, handler);
-//   }
-
-//   @override
-//   void onError(DioError err, ErrorInterceptorHandler handler) {
-//     print(
-//       'ERROR[${err.response?.statusCode}] => PATH: ${err.requestOptions.path}',
-//     );
-//     return super.onError(err, handler);
-//   }
-
-  // Mocked response data
 
   List<Map<String, dynamic>> notifications = [
     {

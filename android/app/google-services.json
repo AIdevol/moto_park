@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "37732685249",
+    "project_id": "motopark-45477",
+    "storage_bucket": "motopark-45477.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:37732685249:android:da3fd8a688630ca35b8b40",
+        "android_client_info": {
+          "package_name": "com.example.moto_park"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD8W4bc16bzQBr4YXE99jicG1u3IMjLto0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

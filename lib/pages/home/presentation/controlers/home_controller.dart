@@ -245,23 +245,25 @@ class HomeController extends GetxController
     'Delete Vehicle',
   ];
 
-  // VehicleListModel vehicleListModel = VehicleListModel;
 
+
+  // VehicleListModel vehicleListModel = VehicleListModel;
 
 
   @override
   void onInit() {
-
     initAnimation();
     fetchLoginDetails();
     super.onInit();
   }
+
   //
   void initAnimation() {
     animationController = AnimationController(
       duration: const Duration(milliseconds: 1),
       vsync: this,
-    )..addListener(() {
+    )
+      ..addListener(() {
         update();
       });
 
@@ -304,9 +306,10 @@ class HomeController extends GetxController
         Get.to(() => const DocumentAndReminder());
         break;
       case 'Location History':
-        Get.to(() => const MapLocation(
-              locationHistory: [],
-            ));
+        Get.to(() =>
+        const MapLocation(
+          locationHistory: [],
+        ));
         break;
       case 'Show Vehicle Details':
         Get.toNamed(AppRoutes.showVehicle);
@@ -316,7 +319,7 @@ class HomeController extends GetxController
           backgroundColor: Colors.yellow,
           title: "Delete Account",
           titleStyle:
-              BalooStyles.balooboldTextStyle(color: Colors.black87, size: 15),
+          BalooStyles.balooboldTextStyle(color: Colors.black87, size: 15),
           content: Text(
             "Are you sure you want to delete account?",
             style: BalooStyles.baloomediumTextStyle(
@@ -325,14 +328,8 @@ class HomeController extends GetxController
           textConfirm: "Yes",
           textCancel: "No",
           onConfirm: () async {
+            hitDeleteVehicleApi(LOCALKEY_token, vehicle_id);
             Get.back();
-            // try {
-            //   await Get.find<AuthenticationApiService>().deletevehicledetails(LOCALKEY_token);
-            //   Get.toNamed(AppRoutes.homeScreen);
-            // } catch (e) {
-            //   Get.snackbar("Error", "Failed to delete vehicle details: $e");
-            // }
-            hitDeleteVehicleApi(LOCALKEY_token);
           },
           onCancel: () {
             Get.back();
@@ -345,26 +342,27 @@ class HomeController extends GetxController
   }
 
 
- void hitApiToLogout(){
-   customLoader.show();
-   Get.find<AuthenticationApiService>()
-       .logoutApiCall()
-       .then((value) async {
-     customLoader.hide();
-    await storage.remove(LOCALKEY_token);
-    await storage.remove(userId);
-    await storage.remove(RefreshToken);
-    await storage.remove(isFirstTime);
-     print("Logged out successfully");
-     Get.offAllNamed(AppRoutes.login);
-     customLoader.hide();
-     update();
-   }).onError((error, stackTrace) {
-     customLoader.hide();
-     toast(error.toString());
-   });
-}
-  void hitDeleteAccountApi(){
+  void hitApiToLogout() {
+    customLoader.show();
+    Get.find<AuthenticationApiService>()
+        .logoutApiCall()
+        .then((value) async {
+      customLoader.hide();
+      await storage.remove(LOCALKEY_token);
+      await storage.remove(userId);
+      await storage.remove(RefreshToken);
+      await storage.remove(isFirstTime);
+      print("Logged out successfully");
+      Get.offAllNamed(AppRoutes.login);
+      customLoader.hide();
+      update();
+    }).onError((error, stackTrace) {
+      customLoader.hide();
+      toast(error.toString());
+    });
+  }
+
+  void hitDeleteAccountApi() {
     customLoader.show();
     Get.find<AuthenticationApiService>()
         .deleteAccountApiCall(LOCALKEY_token)
@@ -378,35 +376,35 @@ class HomeController extends GetxController
       print("Delete accounting successfully");
       toast("Successfully!, Deleted Api");
       Get.back();
-      if(storage.read(isVerifiedQr) == false){
+      if (storage.read(isVerifiedQr) == false) {
         Get.toNamed(AppRoutes.qrScreen);
-      }else{
+      } else {
         Get.toNamed(AppRoutes.login);
       }
       Get.offAllNamed(AppRoutes.homeScreen);
- update();
+      update();
     }).onError((error, stackTrace) {
       customLoader.hide();
       toast(error.toString());
     });
   }
 
-  void hitDeleteVehicleApi(id){
+  void hitDeleteVehicleApi(String vehicle_id, LOCALKEY_token) {
     customLoader.show();
-    Get.find<AuthenticationApiService>()
-        .deletevehicledetails(id, LOCALKEY_token)
-        .then((value) {
-      print("--------------assigning delete vehcile");
+    Get.find<AuthenticationApiService>().deletevehicledetails(vehicle_id,LOCALKEY_token).then((value) {
       customLoader.hide();
-      storage.remove(id);
-      print("Delete vehicles successfully");
-      // Get.offAllNamed(AppRoutes.login);
-      if(storage.read(isVerifiedQr) == false){
-        Get.toNamed(AppRoutes.addVehicle);
-      }else{
-        Get.toNamed(AppRoutes.homeScreen);
+      if (value) {
+        storage.remove(vehicle_id);
+        print("Delete vehicles successfully");
+        if (storage.read(isVerifiedQr) == false) {
+          Get.toNamed(AppRoutes.addVehicle);
+        } else {
+          Get.toNamed(AppRoutes.homeScreen);
+        }
+      } else {
+        print("Deletion failed but no exception thrown");
       }
-      Get.offAllNamed(AppRoutes.homeScreen);
+
       update();
     }).onError((error, stackTrace) {
       customLoader.hide();

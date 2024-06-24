@@ -433,7 +433,7 @@ class EditProfileScreen extends GetView<EditProfileController> {
     return CustomTextField(
         hintText: "Name",
         labletext: "Name",
-        controller: controller.firstNameController,
+        controller: controller.firstNameController!,
         textInputType: TextInputType.name,
         textInputAction: TextInputAction.next,
         onFieldSubmitted: (String? value) {

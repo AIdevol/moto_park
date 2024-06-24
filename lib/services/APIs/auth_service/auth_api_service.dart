@@ -228,11 +228,12 @@ class AuthenticationApiService extends GetxService
   }
 
 // _-------------------------------------------------vehicle deletions-----------------------
-  Future<bool> deletevehicledetails(String id,String LOCALKEY_token) async {
+  Future<bool> deletevehicledetails(String vehicle_id,LOCALKEY_token) async {
     try {
-      final response = await dioClient?.delete(
-        "${ApiEnd.addVehicleEnd}/$id/", options: Options(
-        headers: {'Authorization': 'Bearer $LOCALKEY_token'},
+      final token = await storage.read(LOCALKEY_token);
+      final response = await dioClient!.delete(
+        "${ApiEnd.addVehicleEnd}/$vehicle_id/", options: Options(
+        headers: {'Authorization': 'Bearer $token'},
       ),);
 
       if (response.statuscode >= 200 && response.statuscode < 500) {
