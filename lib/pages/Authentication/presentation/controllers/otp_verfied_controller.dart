@@ -164,56 +164,20 @@ class OtpVerifiedController extends GetxController {
   // }
   emailHitOtpAPI({required String otp}) {
     customLoader.show();
-    FocusManager.instance.primaryFocus?.unfocus();
-
-    if (otp.isEmpty) {
-      customLoader.hide();
-      toast("Please enter a valid OTP");
-      return;
-    }
-
+    FocusManager.instance.primaryFocus!.unfocus();
     var verifyOtpReq = {"otp": otp};
-    print("Requesting Email OTP verification with: $verifyOtpReq");
-
     Get.find<AuthenticationApiService>()
-        .otpApiCallEmail(dataBody: verifyOtpReq, email: email)
+        .otpApiCallEmail(dataBody: verifyOtpReq, email: phone)
         .then((value) async {
       customLoader.hide();
-      print("Full response: $value");
-
-      if (value != null && value.accessToken != null) {
-        toast(value.message ?? "Email OTP verification successful");
-        print("Email OTP verification successful, message: ${value.message}");
-        Get.toNamed(AppRoutes.resetpass, arguments: {"forgot": true, 'email': email});
-      } else {
-        toast(value?.message ?? "Email OTP verification failed");
-        print("Email OTP verification failed, message: ${value?.message}");
-      }
-    }).catchError((error) {
+      Get.toNamed(AppRoutes.resetpass,
+          arguments: {"forgot": true, 'email': phone});
+      toast(value.message);
+    }).onError((error, stackTrace) {
       customLoader.hide();
-
-      if (error is DioError) {
-        final response = error.response;
-        if (response != null && response.statusCode == 400) {
-          final data = response.data;
-          if (data != null && data['message'] != null) {
-            toast(data['message']);
-            print("OTP verification failed, message: ${data['message']}");
-          } else {
-            toast("Invalid OTP or OTP has expired");
-            print("OTP verification failed, unknown reason.");
-          }
-        } else {
-          toast("An unexpected error occurred");
-          print("OTP verification failed, unexpected error: $error");
-        }
-      } else {
-        toast("An error occurred: $error");
-        print("OTP verification failed, error: $error");
-      }
+      toast(error);
     });
   }
-
 
   hitResendOtpAPI() {
     customLoader.show();

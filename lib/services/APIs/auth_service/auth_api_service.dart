@@ -1,9 +1,11 @@
 import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_disposable.dart';
 import 'package:moto_park/constants/local_keys.dart';
 import 'package:moto_park/main.dart';
+import 'package:moto_park/navigation/navigation.dart';
 import 'package:moto_park/response_model/register_response_model.dart';
 import 'package:moto_park/response_model/verify_contact_res_model.dart';
 import 'package:moto_park/services/APIs/api_ends.dart';
@@ -77,14 +79,12 @@ class AuthenticationApiService extends GetxService
       final response = await dioClient?.post(
         ApiEnd.logoutEnd,
         data: dataBody,
-        options: Options(headers: {
-          "Authorization": "Bearer $accessToken"
-        }),
+        options: Options(headers: {"Authorization": "Bearer $accessToken"}),
       );
-      await storage.erase();
-      if(response.statusCode == 205){
-        return response.data['message'];
-      }else{
+
+      if (response.statusCode == 205) {
+        return response.data;
+      } else {
         throw Exception('Logout failed to status code: ${response.statusCode}');
       }
       // return RegisterResponseModel.fromJson(response.data);
@@ -110,7 +110,7 @@ class AuthenticationApiService extends GetxService
 
   @override
   Future<RegisterResponseModel> otpApiCallEmail(
-      { email, Map<String, dynamic>? dataBody}) async {
+      {email, Map<String, dynamic>? dataBody}) async {
     try {
       final response = await dioClient!
           .post("api/forget_password/$email/verify_otp/", data: dataBody);
@@ -137,7 +137,7 @@ class AuthenticationApiService extends GetxService
       {Map<String, dynamic>? dataBody}) async {
     try {
       final response =
-      await dioClient!.post(ApiEnd.verifyContactEnd, data: dataBody);
+          await dioClient!.post(ApiEnd.verifyContactEnd, data: dataBody);
       return VerifyConResModel.fromJson(response);
     } catch (e) {
       return Future.error(NetworkExceptions.getDioException(e));
@@ -148,13 +148,15 @@ class AuthenticationApiService extends GetxService
   Future<RegisterResponseModel> changePass(
       {Map<String, dynamic>? dataBody}) async {
     try {
-      final response =
-      await dioClient!.post(
-        ApiEnd.resetPassEnd, data: dataBody, options: Options(
-        headers: {
-          'Authorization': 'Bearer ${await storage.read(LOCALKEY_token)}'
-        },
-      ),);
+      final response = await dioClient!.post(
+        ApiEnd.resetPassEnd,
+        data: dataBody,
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer ${await storage.read(LOCALKEY_token)}'
+          },
+        ),
+      );
       return RegisterResponseModel.fromJson(response);
     } catch (e) {
       return Future.error(NetworkExceptions.getDioException(e));
@@ -178,25 +180,24 @@ class AuthenticationApiService extends GetxService
       {Map<String, dynamic>? dataBody}) async {
     try {
       final response =
-      await dioClient!.post(ApiEnd.forgotPassEnd, data: dataBody);
+          await dioClient!.post(ApiEnd.forgotPassEnd, data: dataBody);
       return VerifyConResModel.fromJson(response);
     } catch (e) {
       return Future.error(NetworkExceptions.getDioException(e));
     }
   }
 
-
   Future<UserDetails> getUserDetailsApiCall(String LOCALKEY_token) async {
     try {
       final token = await storage.read(LOCALKEY_token);
       print('Token: $token');
       final response = await dioClient!.get(
-
-        ApiEnd.userdetailsEnd, options: Options(
-        headers: {
-          'Authorization': 'Bearer ${await storage.read(LOCALKEY_token)}'
-        },
-      ),
+        ApiEnd.userdetailsEnd,
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer ${await storage.read(LOCALKEY_token)}'
+          },
+        ),
       );
       return UserDetails.fromJson(response);
     } catch (e) {
@@ -228,13 +229,15 @@ class AuthenticationApiService extends GetxService
   }
 
 // _-------------------------------------------------vehicle deletions-----------------------
-  Future<bool> deletevehicledetails(String vehicle_id,LOCALKEY_token) async {
+  Future<bool> deletevehicledetails(String vehicle_id, LOCALKEY_token) async {
     try {
       final token = await storage.read(LOCALKEY_token);
       final response = await dioClient!.delete(
-        "${ApiEnd.addVehicleEnd}/$vehicle_id/", options: Options(
-        headers: {'Authorization': 'Bearer $token'},
-      ),);
+        "${ApiEnd.addVehicleEnd}/$vehicle_id/",
+        options: Options(
+          headers: {'Authorization': 'Bearer $token'},
+        ),
+      );
 
       if (response.statuscode >= 200 && response.statuscode < 500) {
         return true;
@@ -247,12 +250,11 @@ class AuthenticationApiService extends GetxService
     }
   }
 
-  Future<Map<String, dynamic>> updateUserDetailsApiCall(String LOCALKEY_token,
-      UserDetails updatedUserDetails) async {
+  Future<Map<String, dynamic>> updateUserDetailsApiCall(
+      String LOCALKEY_token, UserDetails updatedUserDetails) async {
     try {
-      final response = await dioClient!.put(
-          ApiEnd.userdetailsEnd, options: Options(
-          headers: {
+      final response = await dioClient!.put(ApiEnd.userdetailsEnd,
+          options: Options(headers: {
             'Authorization': 'Bearer ${await storage.read(LOCALKEY_token)}'
           }));
       return response;
@@ -264,11 +266,11 @@ class AuthenticationApiService extends GetxService
   Future<VehicleListModel> addVehicledetailsApicall(String LOCALKEY_token,
       {Map<String, dynamic>? dataBody}) async {
     try {
-      final response = await dioClient!.post(
-          ApiEnd.addVehicleEnd, data: dataBody, options: Options(headers: {
-            'Authorization':'Bearer ${await storage
-            .read(LOCALKEY_token)}'
-      }));
+      final response = await dioClient!.post(ApiEnd.addVehicleEnd,
+          data: dataBody,
+          options: Options(headers: {
+            'Authorization': 'Bearer ${await storage.read(LOCALKEY_token)}'
+          }));
       return VehicleListModel.fromJson(response.data);
     } catch (e) {
       return Future.error(NetworkExceptions.getDioException(e));
@@ -298,8 +300,8 @@ class AuthenticationApiService extends GetxService
   Future<SubscCardModel> addsubscriptionApicall(
       {Map<String, dynamic>? dataBody}) async {
     try {
-      final response = await dioClient!.post(
-          ApiEnd.subscriptionsEnd, data: dataBody);
+      final response =
+          await dioClient!.post(ApiEnd.subscriptionsEnd, data: dataBody);
       return response;
     } catch (e) {
       return Future.error(NetworkExceptions.getDioException(e));
@@ -353,25 +355,24 @@ class AuthenticationApiService extends GetxService
 
   Future<String> fetchPhoneNumber(String scannedData) async {
     try {
-      final responseBody = await dioClient!.post(
-          ApiEnd.fetchedphoneEnd, data: {'data': scannedData});
+      final responseBody = await dioClient!
+          .post(ApiEnd.fetchedphoneEnd, data: {'data': scannedData});
       return responseBody.data['phone'];
     } catch (err) {
       return Future.error(NetworkExceptions.getDioException(err));
     }
   }
 
-  Future<RegisterResponseModel> addprofileImage(String userImage) async{
-    try{
-      final response = await dioClient!.put("${ApiEnd.userdetailsEnd}/user_image/",options: Options(
-      headers: {
-      'Authorization': 'Bearer ${await storage.read(LOCALKEY_token)}'
-      }));
+  Future<RegisterResponseModel> addprofileImage(String userImage) async {
+    try {
+      final response = await dioClient!.put(
+          "${ApiEnd.userdetailsEnd}/user_image/",
+          options: Options(headers: {
+            'Authorization': 'Bearer ${await storage.read(LOCALKEY_token)}'
+          }));
       return response.data;
-    }catch(e){
+    } catch (e) {
       return Future.error(NetworkExceptions.getDioException(e));
     }
   }
 }
-
-

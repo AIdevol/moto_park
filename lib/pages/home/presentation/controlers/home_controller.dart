@@ -245,10 +245,7 @@ class HomeController extends GetxController
     'Delete Vehicle',
   ];
 
-
-
   // VehicleListModel vehicleListModel = VehicleListModel;
-
 
   @override
   void onInit() {
@@ -262,8 +259,7 @@ class HomeController extends GetxController
     animationController = AnimationController(
       duration: const Duration(milliseconds: 1),
       vsync: this,
-    )
-      ..addListener(() {
+    )..addListener(() {
         update();
       });
 
@@ -306,10 +302,9 @@ class HomeController extends GetxController
         Get.to(() => const DocumentAndReminder());
         break;
       case 'Location History':
-        Get.to(() =>
-        const MapLocation(
-          locationHistory: [],
-        ));
+        Get.to(() => const MapLocation(
+              locationHistory: [],
+            ));
         break;
       case 'Show Vehicle Details':
         Get.toNamed(AppRoutes.showVehicle);
@@ -319,7 +314,7 @@ class HomeController extends GetxController
           backgroundColor: Colors.yellow,
           title: "Delete Account",
           titleStyle:
-          BalooStyles.balooboldTextStyle(color: Colors.black87, size: 15),
+              BalooStyles.balooboldTextStyle(color: Colors.black87, size: 15),
           content: Text(
             "Are you sure you want to delete account?",
             style: BalooStyles.baloomediumTextStyle(
@@ -341,20 +336,17 @@ class HomeController extends GetxController
     }
   }
 
-
   void hitApiToLogout() {
     customLoader.show();
-    Get.find<AuthenticationApiService>()
-        .logoutApiCall()
-        .then((value) async {
+    Get.find<AuthenticationApiService>().logoutApiCall().then((value) async {
+      print("hellow++++++++++++++++++++");
       customLoader.hide();
       await storage.remove(LOCALKEY_token);
       await storage.remove(userId);
       await storage.remove(RefreshToken);
       await storage.remove(isFirstTime);
-      print("Logged out successfully");
+      log.d("Logged out successfully");
       Get.offAllNamed(AppRoutes.login);
-      customLoader.hide();
       update();
     }).onError((error, stackTrace) {
       customLoader.hide();
@@ -391,7 +383,9 @@ class HomeController extends GetxController
 
   void hitDeleteVehicleApi(String vehicle_id, LOCALKEY_token) {
     customLoader.show();
-    Get.find<AuthenticationApiService>().deletevehicledetails(vehicle_id,LOCALKEY_token).then((value) {
+    Get.find<AuthenticationApiService>()
+        .deletevehicledetails(vehicle_id, LOCALKEY_token)
+        .then((value) {
       customLoader.hide();
       if (value) {
         storage.remove(vehicle_id);
