@@ -205,6 +205,7 @@
 // // }
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:moto_park/constants/local_keys.dart';
 import 'package:moto_park/response_model/vehical_list_model.dart';
 import 'package:moto_park/services/APIs/auth_service/auth_api_service.dart';
@@ -254,6 +255,7 @@ class AddVehicleController extends GetxController {
     super.onClose();
   }
 
+
   void addVehicleApiCall() async {
     if (_validateFields()) {
       customLoader.show();
@@ -279,7 +281,12 @@ class AddVehicleController extends GetxController {
       Get.find<AuthenticationApiService>()
           .addVehicleDetailsApiCall(dataBody: loginReq)
           .then((vehicleListModel) {
-        toast(vehicleListModel.id?.toString() ?? 'Failed to get vehicle ID');
+        if (vehicleListModel.id != null) {
+          storage.write('vehicleId', vehicleListModel.id.toString());
+          toast("Vehicle ID saved: ${vehicleListModel.id}");
+        }
+        print(storage.read(vehicleId));
+        // toast(vehicleListModel.id?.toString() ?? 'Failed to get vehicle ID');
         customLoader.hide();
         toast("Vehicle added successfully");
       }).catchError((error) {

@@ -276,6 +276,7 @@ class AuthenticationApiService extends GetxService
 
   @override
   Future<VehicleListModel> getVehicleDetailsApiCall(String? vehicleId) async {
+    // String? vehicleId = getVehicleId();
     try {
       final response = await dioClient!.get("${ApiEnd.addVehicleEnd}/$vehicleId/",skipAuth: false);
       print("workkiinnggg..............adjfakldf");

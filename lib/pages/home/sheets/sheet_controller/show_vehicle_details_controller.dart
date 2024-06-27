@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:moto_park/constants/local_keys.dart';
 import 'package:moto_park/response_model/vehical_list_model.dart';
 import 'package:moto_park/services/APIs/auth_service/auth_api_service.dart';
+import 'package:moto_park/services/vehicle_services.dart';
 import 'package:moto_park/utilities/custom_flashbar.dart';
 import '../../../../main.dart';
 
@@ -49,8 +50,13 @@ class ShowVehicleController extends GetxController {
     super.onClose();
   }
 
+  String? getVehicleId() {
+    return storage.read('vehicleId');
+  }
  fetchVehicleDetails() {
     customLoader.show();
+    String? vehicleId = getVehicleId();
+
 
     // String? userid = await storage.read(userId);
     //

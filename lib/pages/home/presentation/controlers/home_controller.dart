@@ -385,14 +385,14 @@ class HomeController extends GetxController
 
   // we dont know whre is vehcile id , so 1st you need to implements vehicle details api than you get the id from where got it pass it in the api ok
 
-   hitDeleteVehicleApi(String vehicle_id) {
+   hitDeleteVehicleApi(String vehicleId) {
     customLoader.show();
     Get.find<AuthenticationApiService>()
-        .deleteVehicleDetailsApi(vehicleId: '9')
+        .deleteVehicleDetailsApi(vehicleId: vehicleId)
         .then((isDelete) {
       customLoader.hide();
       if (isDelete==true) {
-        storage.remove(vehicle_id);
+        storage.remove(vehicleId);
         print("Delete vehicles successfully");
         if (storage.read(isVerifiedQr) == false) {
           Get.toNamed(AppRoutes.addVehicle);
