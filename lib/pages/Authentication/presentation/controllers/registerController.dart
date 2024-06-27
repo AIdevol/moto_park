@@ -165,7 +165,6 @@ class RegisterController extends GetxController {
       Get.offAndToNamed(AppRoutes.homeScreen);
     }).onError((error, stackTrace) {
       customLoader.hide();
-      Get.toNamed(AppRoutes.homeScreen);
       toast(error.toString());
     });
   }

@@ -39,10 +39,12 @@ class CustomLoader {
   }
 
   show() {
+  WidgetsBinding.instance.addPostFrameCallback((_) {
     _overlayState = Overlay.of(Get.context!);
     _buildLoader();
     _overlayState!.insert(_overlayEntry!);
-  }
+  });
+}
 
   hide() {
     try {

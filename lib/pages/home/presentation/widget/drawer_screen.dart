@@ -389,6 +389,8 @@ class _DrawerScreenState extends State<DrawerScreen> {
                             tag: 'avatarimage',
                             child: CircleAvatar(
                               radius: 45,
+                            //  backgroundImage: controller.profileimg,
+
                               backgroundImage: NetworkImage('https://randomuser.me/api/portraits/men/22.jpg'),
                             ),
                           ),

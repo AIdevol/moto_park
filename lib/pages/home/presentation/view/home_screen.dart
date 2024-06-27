@@ -259,7 +259,9 @@ class HomeScreen extends GetView<HomeController> {
                     return GestureDetector(
                       onTap: () {
                         print("Tapped on item at index $index");
-                        controller.onTitleTapped(controller.titleList[index]);
+                        String title = controller.titleList[index];
+                        String id = controller.titleList[index];
+                        controller.onTitleTapped(title, id);
                         Transition.zoom;
                       },
                       child: AnimatedListItem(

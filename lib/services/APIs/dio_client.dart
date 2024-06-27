@@ -133,7 +133,7 @@ class DioClient {
       bool? skipAuth}) async {
     try {
       if (skipAuth == false) {
-        var token = await storage.read(RefreshToken);
+        var token = await storage.read(LOCALKEY_token);
         // var token = await storage.read(RefreshToken);
         debugPrint("authorization============ $token");
         print("hellp i am rock");
@@ -289,6 +289,8 @@ class DioClient {
         ProgressCallback? onReceiveProgress,
         bool? skipAuth}) async {
     try {
+      // if skipauth is false its automatically handle the auth token or options value no need to reinitialize it.ok
+
       if (skipAuth == false) {
         var token = await storage.read(LOCALKEY_token);
         debugPrint("authorization============ $token");

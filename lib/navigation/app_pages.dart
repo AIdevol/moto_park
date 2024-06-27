@@ -17,7 +17,7 @@ import 'package:moto_park/pages/Notification/binding/notification_biniding.dart'
 import 'package:moto_park/pages/Notification/notification.dart';
 import 'package:moto_park/pages/home/bindings/home_binding.dart';
 import 'package:moto_park/pages/home/presentation/view/home_screen.dart';
-import 'package:moto_park/pages/home/sheets/details_Updated.dart';
+import 'package:moto_park/pages/home/sheets/vehicle_details_screen.dart';
 import 'package:moto_park/pages/splash/binding/binding.dart';
 import 'package:moto_park/pages/splash/presentation/views/splash_screen.dart';
 import '../pages/Authentication/binding/QRBinding.dart';

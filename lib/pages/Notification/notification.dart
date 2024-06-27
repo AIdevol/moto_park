@@ -2,11 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:moto_park/constants/color_constants.dart';
 import 'package:moto_park/pages/Notification/notification_cotroller.dart';
+import 'package:moto_park/pages/Notification/notifications_api.dart';
 import 'package:moto_park/utilities/google_font_text_style.dart';
-import 'package:moto_park/utilities/helper_widget.dart';
 
-class MyNotifications extends GetView<NotificationController> {
-  const MyNotifications({Key? key});
+
+class MyNotifications extends StatefulWidget {
+  const MyNotifications({Key? key}) : super(key: key);
+
+  @override
+  _MyNotificationsState createState() => _MyNotificationsState();
+}
+
+class _MyNotificationsState extends State<MyNotifications> {
+  late NotificationController _notificationController;
+
+  @override
+  void initState() {
+    super.initState();
+    _notificationController = Get.put(NotificationController());
+    PushNotifications.init(); 
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,15 +38,14 @@ class MyNotifications extends GetView<NotificationController> {
         height: MediaQuery.of(context).size.height,
         color: appColor,
         child: GetBuilder<NotificationController>(
-          init: NotificationController(),
+          init: _notificationController,
           builder: (notificationController) {
             final notifications = notificationController.fetchNotifications();
             if (notifications.isEmpty) {
               return Center(
                 child: Text(
                   'No notifications available.',
-                  style: BalooStyles.baloomediumTextStyle(
-                      color: blackColor, size: 18),
+                  style: BalooStyles.baloomediumTextStyle(color: blackColor, size: 18),
                 ),
               );
             }
@@ -41,7 +55,7 @@ class MyNotifications extends GetView<NotificationController> {
                 final notification = notifications[index];
                 return Dismissible(
                   key: Key(notification['title']),
-                  direction: DismissDirection.horizontal,
+                  direction: DismissDirection.startToEnd,
                   background: Container(
                     margin: EdgeInsets.all(16.0),
                     alignment: Alignment.centerRight,
@@ -57,15 +71,15 @@ class MyNotifications extends GetView<NotificationController> {
                   onDismissed: (direction) {
                     notificationController.deleteNotification(index);
                     final title = notification['title'];
-                    final message = notification['message'];
                     Get.snackbar(
-                        'Notification Deleted..', 'You dismissed: $title',
-                        backgroundColor: Color(0xFFFFE0).withOpacity(0.9),
-                        colorText: Colors.black,
-                        duration: const Duration(milliseconds: 3000),
-                        snackPosition: SnackPosition.BOTTOM,
-                        margin: const EdgeInsets.only(
-                            bottom: 20.0, right: 10, left: 10));
+                      'Notification Deleted', 
+                      'You dismissed: $title',
+                      backgroundColor: Color(0xFFFFE0).withOpacity(0.9),
+                      colorText: Colors.black,
+                      duration: const Duration(milliseconds: 3000),
+                      snackPosition: SnackPosition.TOP,
+                      margin: const EdgeInsets.only(bottom: 20.0, right: 10, left: 10),
+                    );
                   },
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width,
@@ -88,14 +102,12 @@ class NotificationCard extends StatelessWidget {
   final String title;
   final String message;
 
-  const NotificationCard({Key? key, required this.title, required this.message})
-      : super(key: key);
+  const NotificationCard({Key? key, required this.title, required this.message}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Card(
       color: Color.fromARGB(255, 249, 252, 215),
-      // color: blueShade2,
       margin: const EdgeInsets.all(8.0),
       elevation: 6.0,
       child: Padding(
@@ -110,7 +122,7 @@ class NotificationCard extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            vGap(8.0),
+            SizedBox(height: 8.0),
             Text(
               message,
               style: const TextStyle(

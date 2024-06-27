@@ -13,6 +13,7 @@ import 'package:moto_park/utilities/gradient_button.dart';
 import 'package:moto_park/utilities/helper_widget.dart';
 
 class SubscriptionScreen extends GetView<SubscriptionScreenController> {
+
   @override
   Widget build(BuildContext context) {
     return MyAnnotatedRegion(
@@ -177,9 +178,8 @@ class SubscriptionScreen extends GetView<SubscriptionScreenController> {
           subscriptionBuilder(),
           GradientButton(
             onTap: () {
-              // if (formGlobalKey.currentState?.validate() ?? false) {
-              //   controller.hitsubsubscriptionApicall();
-              // }
+              controller.hitsubsubscriptionApicall();
+
 
               var options = {
                 'key': 'rzp_test_2P38XNePtDYveW',
@@ -283,7 +283,7 @@ class SubscriptionScreen extends GetView<SubscriptionScreenController> {
                       ),
                     ),
                   ),
-                  cardM.months == "Yearly"                                                                                                                                                                                                                                                    
+                  cardM.months == "Yearly"
                       ? Positioned(
                           left: 36.sp,
                           top: -20,
@@ -416,3 +416,154 @@ class PurchaseHandler extends DefaultPurchaseHandler {
     return true;
   }
 }
+// class SubscriptionScreen extends GetView<SubscriptionScreenController> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MyAnnotatedRegion(
+//       child: GetBuilder<SubscriptionScreenController>(builder: (controller) {
+//         return Scaffold(
+//           appBar: backAppBar(title: "Premium"),
+//           body: _mainBody(),
+//         );
+//       }),
+//     );
+//   }
+//
+//   Widget _mainBody() {
+//     return SingleChildScrollView(
+//       child: Column(
+//         crossAxisAlignment: CrossAxisAlignment.start,
+//         children: [
+//           Container(
+//             width: Get.width,
+//             margin: const EdgeInsets.all(16),
+//             height: 100,
+//             decoration: const BoxDecoration(
+//               borderRadius: BorderRadius.all(Radius.circular(8.0)),
+//               image: DecorationImage(
+//                 fit: BoxFit.cover,
+//                 alignment: FractionalOffset.center,
+//                 image: AssetImage('assets/premium_bg.png'),
+//               ),
+//             ),
+//             child: Text(
+//               "A M C",
+//               style: BalooStyles.baloosemiBoldTextStyle(size: 25.sp),
+//               textAlign: TextAlign.center,
+//             ).marginSymmetric(vertical: 10),
+//           ),
+//           Text(
+//             "Access to All Premium Articles",
+//             style: BalooStyles.baloonormalTextStyle(size: 19.sp, weight: FontWeight.w500),
+//             textAlign: TextAlign.center,
+//           ).paddingSymmetric(horizontal: 15.sp),
+//           vGap(10),
+//           Text(
+//             "Unlock Your Subscription",
+//             style: BalooStyles.baloonormalTextStyle(size: 17.sp),
+//             textAlign: TextAlign.center,
+//           ).paddingSymmetric(horizontal: 15.sp),
+//           Text(
+//             "All features at a glance",
+//             style: BalooStyles.baloonormalTextStyle(size: 16.sp),
+//             textAlign: TextAlign.center,
+//           ).paddingSymmetric(horizontal: 15.sp, vertical: 10.sp),
+//           vGap(20.sp),
+//           subscriptionBuilder(),
+//           GradientButton(
+//             onTap: () {
+//               controller.openCheckout();
+//             },
+//             name: 'Purchase',
+//           ).marginOnly(bottom: 20, left: 15, right: 15, top: 30),
+//         ],
+//       ),
+//     );
+//   }
+//
+//   Widget subscriptionBuilder() {
+//     return Container(
+//       height: 280.sp,
+//       child: CarouselSlider(
+//         items: controller.rupeesList.map((cardM) {
+//           return Builder(
+//             builder: (BuildContext context) {
+//               return Stack(
+//                 clipBehavior: Clip.none,
+//                 children: [
+//                   InkWell(
+//                     onTap: () {
+//                       controller.selectedRupee = cardM.rupees ?? '';
+//                       controller.update();
+//                     },
+//                     child: Container(
+//                       padding: EdgeInsets.symmetric(vertical: 10.sp, horizontal: 15.sp),
+//                       margin: EdgeInsets.only(left: 15.sp, right: 10.sp),
+//                       decoration: BoxDecoration(
+//                         borderRadius: BorderRadius.circular(12),
+//                         border: Border.all(width: 2, color: Colors.lightGreenAccent),
+//                         gradient: splashGradient2,
+//                       ),
+//                       child: Column(
+//                         mainAxisSize: MainAxisSize.min,
+//                         children: [
+//                           Image.asset(
+//                             "assets/membership.png",
+//                             height: 35.sp,
+//                             width: 35.sp,
+//                           ),
+//                           Text(
+//                             cardM.months ?? '',
+//                             style: BalooStyles.baloosemiBoldTextStyle(color: Colors.pink),
+//                             textAlign: TextAlign.center,
+//                           ).marginSymmetric(vertical: 15),
+//                           Text(
+//                             cardM.timed ?? '',
+//                             style: BalooStyles.baloosemiBoldTextStyle(color: Colors.black87),
+//                             textAlign: TextAlign.center,
+//                           ).marginSymmetric(vertical: 15),
+//                           Text(
+//                             cardM.rupees ?? '',
+//                             style: BalooStyles.baloosemiBoldTextStyle(size: 20, color: Colors.black),
+//                             textAlign: TextAlign.center,
+//                           ).marginSymmetric(vertical: 10),
+//                         ],
+//                       ),
+//                     ),
+//                   ),
+//                   cardM.months == "Yearly"
+//                       ? Positioned(
+//                     left: 36.sp,
+//                     top: -20,
+//                     child: Container(
+//                       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+//                       decoration: BoxDecoration(
+//                         borderRadius: BorderRadius.circular(15.sp),
+//                         color: Colors.green,
+//                       ),
+//                       child: Text(
+//                         "Save Extra 30%",
+//                         style: BalooStyles.baloomediumTextStyle(),
+//                         textAlign: TextAlign.center,
+//                       ),
+//                     ),
+//                   )
+//                       : Container(),
+//                 ],
+//               );
+//             },
+//           );
+//         }).toList(),
+//         options: CarouselOptions(
+//           autoPlay: true,
+//           enlargeCenterPage: true,
+//           viewportFraction: .55,
+//           aspectRatio: 1.5,
+//           initialPage: 2,
+//           autoPlayInterval: const Duration(seconds: 2),
+//           enlargeStrategy: CenterPageEnlargeStrategy.zoom,
+//         ),
+//       ),
+//     );
+//   }
+// }

@@ -235,6 +235,7 @@ class DocumentVisible extends StatelessWidget {
                           const Center(
                             child: CircleAvatar(
                               radius: 50,
+                              // backgroundImage: controller.profileimg,
                               backgroundImage: NetworkImage("https://randomuser.me/api/portraits/men/22.jpg"),
                             ),
                           ),

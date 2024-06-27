@@ -8,7 +8,7 @@ import 'package:moto_park/pages/Authentication/presentation/controllers/reset_pa
 import 'package:moto_park/pages/Authentication/presentation/controllers/subscription_screen_controller.dart';
 import 'package:moto_park/pages/Notification/notification_cotroller.dart';
 import 'package:moto_park/pages/home/presentation/controlers/home_controller.dart';
-import 'package:moto_park/pages/home/sheets/sheet_controller/details_update_controller.dart';
+import 'package:moto_park/pages/home/sheets/sheet_controller/show_vehicle_details_controller.dart';
 import 'package:moto_park/pages/payment/presentation/controlller/payment_controller.dart';
 import 'package:otp_text_field/otp_text_field.dart';
 

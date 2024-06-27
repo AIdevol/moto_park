@@ -245,6 +245,8 @@ class HomeController extends GetxController
     'Delete Vehicle',
   ];
 
+
+
   // VehicleListModel vehicleListModel = VehicleListModel;
 
   @override
@@ -295,7 +297,7 @@ class HomeController extends GetxController
     super.dispose();
   }
 
-  void onTitleTapped(String title) {
+  void onTitleTapped(String title, String id) {
     print('Title tapped: $title');
     switch (title) {
       case 'View Documents and Reminders':
@@ -323,7 +325,7 @@ class HomeController extends GetxController
           textConfirm: "Yes",
           textCancel: "No",
           onConfirm: () async {
-            hitDeleteVehicleApi(LOCALKEY_token, vehicle_id);
+            await hitDeleteVehicleApi(vehicleId);
             Get.back();
           },
           onCancel: () {
@@ -381,13 +383,15 @@ class HomeController extends GetxController
     });
   }
 
-  void hitDeleteVehicleApi(String vehicle_id, LOCALKEY_token) {
+  // we dont know whre is vehcile id , so 1st you need to implements vehicle details api than you get the id from where got it pass it in the api ok
+
+   hitDeleteVehicleApi(String vehicle_id) {
     customLoader.show();
     Get.find<AuthenticationApiService>()
-        .deletevehicledetails(vehicle_id, LOCALKEY_token)
-        .then((value) {
+        .deleteVehicleDetailsApi(vehicleId: '9')
+        .then((isDelete) {
       customLoader.hide();
-      if (value) {
+      if (isDelete==true) {
         storage.remove(vehicle_id);
         print("Delete vehicles successfully");
         if (storage.read(isVerifiedQr) == false) {
@@ -398,7 +402,6 @@ class HomeController extends GetxController
       } else {
         print("Deletion failed but no exception thrown");
       }
-
       update();
     }).onError((error, stackTrace) {
       customLoader.hide();

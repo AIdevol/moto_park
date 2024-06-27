@@ -37,6 +37,7 @@
 //   }
 class VehicleListModel {
   String? id;
+  String? brandName;
   String? modelNumber;
   String? registrationNumber;
   String? user;
@@ -45,14 +46,16 @@ class VehicleListModel {
 
   VehicleListModel(
       {this.id,
-        this.modelNumber,
-        this.registrationNumber,
-        this.user,
-        this.vehicleType,
-        this.qr});
+      this.brandName,
+      this.modelNumber,
+      this.registrationNumber,
+      this.user,
+      this.vehicleType,
+      this.qr});
 
   VehicleListModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    brandName = json['brand'];
     modelNumber = json['model_number'];
     registrationNumber = json['registration_number'];
     user = json['user'];
@@ -68,6 +71,7 @@ class VehicleListModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
+    data['brand'] = this.brandName;
     data['model_number'] = this.modelNumber;
     data['registration_number'] = this.registrationNumber;
     data['user'] = this.user;

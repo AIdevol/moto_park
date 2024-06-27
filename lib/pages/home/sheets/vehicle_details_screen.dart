@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:moto_park/navigation/navigation.dart';
 import 'package:moto_park/pages/AddVehicle/presentation/controllers/add_vahicle_controller.dart';
-import 'package:moto_park/pages/home/sheets/sheet_controller/details_update_controller.dart';
+import 'package:moto_park/pages/home/sheets/sheet_controller/show_vehicle_details_controller.dart';
 import 'package:moto_park/utilities/gradient_button.dart';
 import 'package:moto_park/utilities/helper_widget.dart';
 import 'package:moto_park/utilities/google_font_text_style.dart';
 import 'package:moto_park/utilities/common_textfield.dart';
 
-class ShowVehicleScreen extends StatelessWidget {
+class ShowVehicleScreen extends GetView<ShowVehicleController> {
   final ShowVehicleController controller = Get.put(ShowVehicleController());
 
   final GlobalKey<FormState> _addVKey = GlobalKey<FormState>();

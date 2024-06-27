@@ -1,49 +1,12 @@
-// import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-// import 'package:timezone/data/latest_all.dart' as timezone;
-// import 'package:timezone/timezone.dart' as timezone;
-//
-// class NotificationApi{
-//   static final _notification = FlutterLocalNotificationsPlugin();
-//
-//   static void init() {
-//     _notification.initialize(
-//       const InitializationSettings(
-//         android: AndroidInitializationSettings('@mipmap/ic_launcher'),
-//         iOS: DarwinInitializationSettings(),
-//       ),
-//     );
-//   }
-//   static scheduleNotification() async {
-//     timezone.initializeTimeZones();
-//     var androidPlatformChannelSpecifics = const AndroidNotificationDetails(
-//       'channel id',
-//       'channel name',
-//       channelDescription: 'channel description',
-//       importance: Importance.max, // set the importance of the notification
-//       priority: Priority.high, // set prority
-//     );
-//     var iOSPlatformChannelSpecifics = const DarwinNotificationDetails();
-//     var platformChannelSpecifics = NotificationDetails(
-//       android: androidPlatformChannelSpecifics,
-//       iOS: iOSPlatformChannelSpecifics,
-//     );
-//     await _notification.zonedSchedule(
-//         "id" as int,
-//         "notification title",
-//         'Message goes here',
-//         timezone.TZDateTime.now(timezone.local).add(const Duration(seconds: 10)),
-//         platformChannelSpecifics,
-//         uiLocalNotificationDateInterpretation:
-//         UILocalNotificationDateInterpretation.absoluteTime,
-//         androidAllowWhileIdle: true);
-//   }
-//
-// }
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:moto_park/pages/Notification/notification_cotroller.dart';
+
 
 class PushNotifications {
-  static final _firebaseMessaging = FirebaseMessaging.instance;
+  static final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   static final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
   static Future<void> init() async {
@@ -51,10 +14,6 @@ class PushNotifications {
     await _firebaseMessaging.requestPermission(
       alert: true,
       badge: true,
-      announcement: true,
-      carPlay: false,
-      criticalAlert: false,
-      provisional: false,
       sound: true,
     );
 
@@ -64,8 +23,19 @@ class PushNotifications {
 
     // Initialize local notifications
     const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
-    const InitializationSettings initializationSettings = InitializationSettings(android: initializationSettingsAndroid);
-    await _flutterLocalNotificationsPlugin.initialize(initializationSettings);
+    const InitializationSettings initializationSettings = InitializationSettings(
+      android: initializationSettingsAndroid,
+    );
+
+    await _flutterLocalNotificationsPlugin.initialize(
+      initializationSettings,
+      onDidReceiveNotificationResponse: (NotificationResponse notificationResponse) {
+        final String? payload = notificationResponse.payload;
+        if (payload != null) {
+          // Handle notification tap
+        }
+      },
+    );
 
     // Create high importance notification channel for Android
     await _createNotificationChannel();
@@ -77,6 +47,7 @@ class PushNotifications {
     const AndroidNotificationChannel channel = AndroidNotificationChannel(
       'high_importance_channel',
       'High Importance Notifications',
+      description: 'This channel is used for important notifications.',
       importance: Importance.high,
     );
 
@@ -90,6 +61,9 @@ class PushNotifications {
     AndroidNotification? android = message.notification?.android;
 
     if (notification != null && android != null) {
+      final NotificationController notificationController = Get.find<NotificationController>();
+      notificationController.addNotification(notification.title!, notification.body!);
+
       _flutterLocalNotificationsPlugin.show(
         notification.hashCode,
         notification.title,
@@ -101,7 +75,12 @@ class PushNotifications {
             icon: android.smallIcon,
           ),
         ),
+        payload: message.data['route'],
       );
     }
+  }
+
+  static void handleNotificationTap(String route, BuildContext context) {
+    Navigator.of(context).pushNamed(route);
   }
 }

@@ -221,8 +221,6 @@ class AddVehicleController extends GetxController {
   late FocusNode modelFocusNode;
   late FocusNode rgFocusNode;
 
-
-
   List<String> vehicleType = [
     "Auto",
     "E-Rickshaw",
@@ -256,14 +254,14 @@ class AddVehicleController extends GetxController {
     super.onClose();
   }
 
-  void addVehicleApiCall() async{
+  void addVehicleApiCall() async {
     if (_validateFields()) {
       customLoader.show();
       FocusManager.instance.primaryFocus?.unfocus();
 
       String? userid = await storage.read(userId);
 
-      if(LOCALKEY_token == null || userid == null){
+      if (LOCALKEY_token == null || userid == null) {
         customLoader.hide();
         toast('user not authenticated');
         return;
@@ -279,7 +277,7 @@ class AddVehicleController extends GetxController {
       };
 
       Get.find<AuthenticationApiService>()
-          .addVehicledetailsApicall(LOCALKEY_token ,dataBody: loginReq)
+          .addVehicleDetailsApiCall(dataBody: loginReq)
           .then((vehicleListModel) {
         toast(vehicleListModel.id?.toString() ?? 'Failed to get vehicle ID');
         customLoader.hide();

@@ -11,6 +11,7 @@ import 'package:moto_park/navigation/app_pages.dart';
 import 'package:moto_park/navigation/init_binding.dart';
 import 'package:moto_park/navigation/navigation.dart';
 import 'package:moto_park/pages/Authentication/presentation/views/login_screen.dart';
+import 'package:moto_park/pages/Notification/notification_cotroller.dart';
 import 'package:moto_park/pages/Notification/notifications_api.dart';
 import 'package:moto_park/response_model/register_response_model.dart';
 import 'package:moto_park/utilities/custom_loader.dart';
@@ -21,6 +22,9 @@ var log = Logger();
 bool isVerifyContact1 = false;
 bool isVerifyContact2 = false;
 bool isVerifyContact3 = false;
+
+
+
 GetStorage storage = GetStorage();
 CustomLoader customLoader = CustomLoader();
 
@@ -30,8 +34,6 @@ Future<void> _firebaseBackgroundMessage(RemoteMessage message) async {
   }
 }
 
-
-
 Future<void> main() async {
   // await FirebaseMessaging.instance.requestPermission();
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,6 +41,7 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  Get.put(NotificationController());
   await PushNotifications.init();
   await GetStorage.init();
   runApp(const MyApp());

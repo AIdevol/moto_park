@@ -7,6 +7,9 @@ class SubscCardModel {
   bool? active;
   String? createdBy;
   String? modifiedBy;
+  String? months;
+  String? rupees;
+  String? timed;
 
   SubscCardModel({
     this.id,
@@ -16,7 +19,10 @@ class SubscCardModel {
     this.tenure,
     this.active,
     this.createdBy,
-    this.modifiedBy, required String months, required String rupees, required String timed,
+    this.modifiedBy,
+    this.months,
+    this.rupees,
+    this. timed,
   });
 
   factory SubscCardModel.fromJson(Map<String, dynamic> json) {
@@ -28,7 +34,11 @@ class SubscCardModel {
       tenure: json['tenure'],
       active: json['active'],
       createdBy: json['created_by'],
-      modifiedBy: json['modified_by'], months: json['months'], rupees: '', timed: '',
+      modifiedBy: json['modified_by'],
+      months: json['months'],
+      rupees: json['rupees'] ?? '',
+      timed: json['timed'] ?? '',
     );
   }
+
 }
