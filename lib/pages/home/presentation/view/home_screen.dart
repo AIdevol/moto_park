@@ -322,16 +322,22 @@ class HomeScreen extends GetView<HomeController> {
               ],
             ),
           ),
-          title: Text(
-            'PB56AB1234',
+          title: Obx(()=>Text(
+            controller.registrationNumberController.value.text.isNotEmpty
+                ? controller.registrationNumberController.value.text
+                : "No Reg. Number",
+            /*'PB56AB1234',*/
             style: BalooStyles.balooboldTextStyle(color: Colors.black),
             textAlign: TextAlign.start,
-          ),
-          subtitle: Text(
-            'Bently Bentlgya',
-            style: BalooStyles.baloonormalTextStyle(color: Colors.grey),
-            textAlign: TextAlign.start,
-          ),
+          ),),
+          subtitle: Obx(()=> Text(
+            controller.modelController.value.text.isNotEmpty
+                ? controller.modelController.value.text
+                : "No Model No.",
+        /*'Bently Bentlgya',*/
+        style: BalooStyles.baloonormalTextStyle(color: Colors.grey),
+        textAlign: TextAlign.start,
+      ),),
           trailing: const Icon(
             Icons.arrow_forward_outlined,
             color: Colors.grey,

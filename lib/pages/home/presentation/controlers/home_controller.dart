@@ -232,12 +232,20 @@ import 'package:moto_park/response_model/vehical_list_model.dart';
 import 'package:moto_park/services/APIs/auth_service/auth_api_service.dart';
 import 'package:moto_park/utilities/custom_dialogue.dart';
 import 'package:moto_park/utilities/custom_flashbar.dart';
+import 'package:moto_park/utilities/custom_loader.dart';
 import 'package:moto_park/utilities/google_font_text_style.dart';
 
 class HomeController extends GetxController
     with GetSingleTickerProviderStateMixin {
   late AnimationController animationController;
   Map<String, dynamic> userDetails = {};
+  var registrationNumberController = TextEditingController().obs;
+  var brandController = TextEditingController().obs;
+  var modelController = TextEditingController().obs;
+  var brandFocusNode = FocusNode().obs;
+  var modelFocusNode = FocusNode().obs;
+  var rgFocusNode = FocusNode().obs;
+  var dropDownValue = "Cars".obs;
   List<String> titleList = [
     'View Documents and Reminders',
     'Location History',
@@ -407,5 +415,29 @@ class HomeController extends GetxController
       customLoader.hide();
       toast(error.toString());
     });
+  }
+
+  void fetchVehicleDetails() async {
+    customLoader.show();
+    String? vehicleId = getVehicleId();
+
+    try {
+      VehicleListModel vehicleDetails = await Get.find<AuthenticationApiService>().getVehicleDetailsApiCall(vehicleId);
+      customLoader.hide();
+
+      brandController.value.text = vehicleDetails.brandName ?? '';
+      modelController.value.text = vehicleDetails.modelNumber ?? '';
+      registrationNumberController.value.text = vehicleDetails.registrationNumber ?? '';
+      dropDownValue.value = vehicleDetails.vehicleType ?? 'Cars';
+      update();
+      toast("Vehicle details fetched successfully");
+    } catch (error) {
+      customLoader.hide();
+      toast('Error occurred: $error');
+    }
+  }
+
+  String? getVehicleId() {
+    return storage.read(vehicleId);
   }
 }

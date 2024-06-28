@@ -193,12 +193,9 @@ class AuthenticationApiService extends GetxService
       print('Token: $token');
       final response = await dioClient!.get(
         ApiEnd.userdetailsEnd,
-        options: Options(
-          headers: {
-            'Authorization': 'Bearer ${await storage.read(LOCALKEY_token)}'
-          },
-        ),
+        skipAuth: false,
       );
+
       return UserDetails.fromJson(response);
     } catch (e) {
       throw NetworkExceptions.getDioException(e);
@@ -213,16 +210,9 @@ class AuthenticationApiService extends GetxService
 
       final response = await dioClient!.delete(
         ApiEnd.userdetailsEnd,
-        options: Options(
-          headers: {'Authorization': 'Bearer $token'},
-        ),
+        skipAuth: false,
       );
-      if (response.statusCode >= 200 && response.statusCode < 300) {
-        return true;
-      } else {
-        throw Exception(
-            'Failed to delete account. Status code: ${response.statusCode}');
-      }
+      return response;
     } catch (e) {
       throw NetworkExceptions.getDioException(e);
     }
@@ -254,9 +244,7 @@ class AuthenticationApiService extends GetxService
       String LOCALKEY_token, UserDetails updatedUserDetails) async {
     try {
       final response = await dioClient!.put(ApiEnd.userdetailsEnd,
-          options: Options(headers: {
-            'Authorization': 'Bearer ${await storage.read(LOCALKEY_token)}'
-          }));
+         skipAuth: false);
       return response;
     } catch (e) {
       throw NetworkExceptions.getDioException(e);
@@ -276,10 +264,10 @@ class AuthenticationApiService extends GetxService
 
   @override
   Future<VehicleListModel> getVehicleDetailsApiCall(String? vehicleId) async {
-    // String? vehicleId = getVehicleId();
+    int? vehicleId = 13;
     try {
       final response = await dioClient!.get("${ApiEnd.addVehicleEnd}/$vehicleId/",skipAuth: false);
-      print("workkiinnggg..............adjfakldf");
+      print(response.vehicleId);
       return VehicleListModel.fromJson(response.data);
     }catch (e) {
       return Future.error(NetworkExceptions.getDioException(e));

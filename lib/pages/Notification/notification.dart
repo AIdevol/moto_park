@@ -5,24 +5,7 @@ import 'package:moto_park/pages/Notification/notification_cotroller.dart';
 import 'package:moto_park/pages/Notification/notifications_api.dart';
 import 'package:moto_park/utilities/google_font_text_style.dart';
 
-
-class MyNotifications extends StatefulWidget {
-  const MyNotifications({Key? key}) : super(key: key);
-
-  @override
-  _MyNotificationsState createState() => _MyNotificationsState();
-}
-
-class _MyNotificationsState extends State<MyNotifications> {
-  late NotificationController _notificationController;
-
-  @override
-  void initState() {
-    super.initState();
-    _notificationController = Get.put(NotificationController());
-    PushNotifications.init(); 
-  }
-
+class MyNotifications extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,65 +17,86 @@ class _MyNotificationsState extends State<MyNotifications> {
         backgroundColor: appColor,
         centerTitle: true,
       ),
-      body: Container(
-        height: MediaQuery.of(context).size.height,
-        color: appColor,
-        child: GetBuilder<NotificationController>(
-          init: _notificationController,
-          builder: (notificationController) {
-            final notifications = notificationController.fetchNotifications();
-            if (notifications.isEmpty) {
-              return Center(
-                child: Text(
-                  'No notifications available.',
-                  style: BalooStyles.baloomediumTextStyle(color: blackColor, size: 18),
+      body: NotificationList(),
+    );
+  }
+}
+
+class NotificationList extends StatefulWidget {
+  @override
+  _NotificationListState createState() => _NotificationListState();
+}
+
+class _NotificationListState extends State<NotificationList> {
+  late NotificationController _notificationController;
+
+  @override
+  void initState() {
+    super.initState();
+    _notificationController = Get.put(NotificationController());
+    PushNotifications.init();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: MediaQuery.of(context).size.height,
+      color: appColor,
+      child: GetBuilder<NotificationController>(
+        init: _notificationController,
+        builder: (notificationController) {
+          final notifications = notificationController.fetchNotifications();
+          if (notifications.isEmpty) {
+            return Center(
+              child: Text(
+                'No notifications available.',
+                style: BalooStyles.baloomediumTextStyle(color: blackColor, size: 18),
+              ),
+            );
+          }
+          return ListView.builder(
+            itemCount: notifications.length,
+            itemBuilder: (context, index) {
+              final notification = notifications[index];
+              return Dismissible(
+                key: Key(notification['title']), // Ensure notification['title'] is unique
+                direction: DismissDirection.startToEnd,
+                background: Container(
+                  margin: EdgeInsets.all(16.0),
+                  alignment: Alignment.centerRight,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.red,
+                  ),
+                  child: const Padding(
+                    padding: EdgeInsets.only(right: 16.0),
+                    child: Icon(Icons.delete, color: Colors.white),
+                  ),
+                ),
+                onDismissed: (direction) {
+                  final dismissedTitle = notification['title'];
+                  notificationController.deleteNotification(index); // Update state first
+                  Get.snackbar(
+                    'Notification Deleted',
+                    'You dismissed: $dismissedTitle',
+                    backgroundColor: Color(0xFFFFE0).withOpacity(0.9),
+                    colorText: Colors.black,
+                    duration: const Duration(milliseconds: 3000),
+                    snackPosition: SnackPosition.TOP,
+                    margin: const EdgeInsets.only(bottom: 20.0, right: 10, left: 10),
+                  );
+                },
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: NotificationCard(
+                    title: notification['title'],
+                    message: notification['message'],
+                  ),
                 ),
               );
-            }
-            return ListView.builder(
-              itemCount: notifications.length,
-              itemBuilder: (context, index) {
-                final notification = notifications[index];
-                return Dismissible(
-                  key: Key(notification['title']),
-                  direction: DismissDirection.startToEnd,
-                  background: Container(
-                    margin: EdgeInsets.all(16.0),
-                    alignment: Alignment.centerRight,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.red,
-                    ),
-                    child: const Padding(
-                      padding: EdgeInsets.only(right: 16.0),
-                      child: Icon(Icons.delete, color: Colors.white),
-                    ),
-                  ),
-                  onDismissed: (direction) {
-                    notificationController.deleteNotification(index);
-                    final title = notification['title'];
-                    Get.snackbar(
-                      'Notification Deleted', 
-                      'You dismissed: $title',
-                      backgroundColor: Color(0xFFFFE0).withOpacity(0.9),
-                      colorText: Colors.black,
-                      duration: const Duration(milliseconds: 3000),
-                      snackPosition: SnackPosition.TOP,
-                      margin: const EdgeInsets.only(bottom: 20.0, right: 10, left: 10),
-                    );
-                  },
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    child: NotificationCard(
-                      title: notification['title'],
-                      message: notification['message'],
-                    ),
-                  ),
-                );
-              },
-            );
-          },
-        ),
+            },
+          );
+        },
       ),
     );
   }

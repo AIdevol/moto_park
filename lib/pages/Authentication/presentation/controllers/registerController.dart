@@ -137,22 +137,22 @@ class RegisterController extends GetxController {
     customLoader.show();
     FocusManager.instance.primaryFocus!.unfocus();
 
-    var loginReq = {
+    var signupReq = {
       "email": emailController.text.trim(),
-      "full_name": firstNameController.text,
+      "first_name": firstNameController.text,
       "phone": countryCodeVal + phoneController.text.trim(),
       "gender": "M",
       "address": addressController.text,
       "blood_group": bloodGroupController.text,
       "date_of_birth": dobController.text,
-      "emergency_contact1":
+      "emergency_contact":
           emgContactCodeVal + emergencyContactController.text.trim(),
       "emergency_contact2":
           emgContactCodeVal + emergencyContactController2.text.trim(),
       "password": passwordController.text
     };
     Get.find<AuthenticationApiService>()
-        .registerApiCall(dataBody: loginReq)
+        .registerApiCall(dataBody: signupReq)
         .then((value) async {
       registerResponseModel = value;
       customLoader.hide();

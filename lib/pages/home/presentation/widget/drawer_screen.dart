@@ -510,7 +510,11 @@ class _DrawerScreenState extends State<DrawerScreen> {
       ),
       textConfirm: "Yes",
       textCancel: "No",
-      onConfirm: widget.onLogoutTap,
+      onConfirm: (){
+        widget.onLogoutTap();
+        Get.back();
+        Get.offAllNamed(AppRoutes.homeScreen);
+        },
       onCancel: () {
         Get.back();
       },

@@ -235,13 +235,14 @@ class AddVehicleController extends GetxController {
 
   @override
   void onInit() {
-    super.onInit();
+
     registrationNumberController = TextEditingController();
     brandController = TextEditingController();
     modelController = TextEditingController();
     rgFocusNode = FocusNode();
     brandFocusNode = FocusNode();
     modelFocusNode = FocusNode();
+    super.onInit();
   }
 
   @override
@@ -285,7 +286,7 @@ class AddVehicleController extends GetxController {
           storage.write('vehicleId', vehicleListModel.id.toString());
           toast("Vehicle ID saved: ${vehicleListModel.id}");
         }
-        print(storage.read(vehicleId));
+        print(vehicleListModel.id);
         // toast(vehicleListModel.id?.toString() ?? 'Failed to get vehicle ID');
         customLoader.hide();
         toast("Vehicle added successfully");
