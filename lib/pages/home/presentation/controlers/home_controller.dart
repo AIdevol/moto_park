@@ -253,14 +253,12 @@ class HomeController extends GetxController
     'Delete Vehicle',
   ];
 
-
-
-  // VehicleListModel vehicleListModel = VehicleListModel;
+  VehicleListModel vehicleListModel = VehicleListModel();
 
   @override
   void onInit() {
     initAnimation();
-    fetchLoginDetails();
+    fetchVehicleDetails();
     super.onInit();
   }
 
@@ -269,7 +267,8 @@ class HomeController extends GetxController
     animationController = AnimationController(
       duration: const Duration(milliseconds: 1),
       vsync: this,
-    )..addListener(() {
+    )
+      ..addListener(() {
         update();
       });
 
@@ -312,9 +311,10 @@ class HomeController extends GetxController
         Get.to(() => const DocumentAndReminder());
         break;
       case 'Location History':
-        Get.to(() => const MapLocation(
-              locationHistory: [],
-            ));
+        Get.to(() =>
+        const MapLocation(
+          locationHistory: [],
+        ));
         break;
       case 'Show Vehicle Details':
         Get.toNamed(AppRoutes.showVehicle);
@@ -324,7 +324,7 @@ class HomeController extends GetxController
           backgroundColor: Colors.yellow,
           title: "Delete Account",
           titleStyle:
-              BalooStyles.balooboldTextStyle(color: Colors.black87, size: 15),
+          BalooStyles.balooboldTextStyle(color: Colors.black87, size: 15),
           content: Text(
             "Are you sure you want to delete account?",
             style: BalooStyles.baloomediumTextStyle(
@@ -346,24 +346,60 @@ class HomeController extends GetxController
     }
   }
 
-  void hitApiToLogout() {
-    customLoader.show();
-    Get.find<AuthenticationApiService>().logoutApiCall().then((value) async {
-      print("hellow++++++++++++++++++++");
-      customLoader.hide();
+  // void hitApiToLogout()async {
+  //   // try {
+  //   //   final String? accessToken = await storage.read(LOCALKEY_token);
+  //   final String? refreshToken = await storage.read(RefreshToken);
+  //   Map<String,dynamic> logoutData = {
+  //     "refresh_token":refreshToken
+  //   };
+  //   customLoader.show();
+  //   Get.find<AuthenticationApiService>().logoutApiCall(dataBody: logoutData).then((value) async {
+  //
+  //     print("hellow++++++++++++++++++++ $value");
+  //     await storage.remove(LOCALKEY_token);
+  //     await storage.remove(userId);
+  //     await storage.remove(RefreshToken);
+  //     await storage.remove(isFirstTime);
+  //     customLoader.hide();
+  //     log.d("Logged out successfully");
+  //     Get.offAllNamed(AppRoutes.login);
+  //
+  //     update();
+  //   }).catchError((error, stackTrace) {
+  //     log.e("Logout error: $error");
+  //     customLoader.hide();
+  //     toast("Logout failed: ${error.toString()}");
+  //   });
+  //   /*onError((error, stackTrace) {
+  //     customLoader.hide();
+  //     toast(error.toString());
+  //   });*/
+  // }
+  void hitApiToLogout() async {
+    try {
+      final String? refreshToken = await storage.read(RefreshToken);
+      Map<String, dynamic> logoutData = {
+        "refresh_token": refreshToken
+      };
+      customLoader.show();
+      await Get.find<AuthenticationApiService>().logoutApiCall(dataBody: logoutData);
+
       await storage.remove(LOCALKEY_token);
       await storage.remove(userId);
       await storage.remove(RefreshToken);
       await storage.remove(isFirstTime);
+
+      customLoader.hide();
       log.d("Logged out successfully");
       Get.offAllNamed(AppRoutes.login);
       update();
-    }).onError((error, stackTrace) {
+    } catch (error) {
+      log.e("Logout error: $error");
       customLoader.hide();
-      toast(error.toString());
-    });
+      toast("Logout failed: ${error.toString()}");
+    }
   }
-
   void hitDeleteAccountApi() {
     customLoader.show();
     Get.find<AuthenticationApiService>()
@@ -393,13 +429,13 @@ class HomeController extends GetxController
 
   // we dont know whre is vehcile id , so 1st you need to implements vehicle details api than you get the id from where got it pass it in the api ok
 
-   hitDeleteVehicleApi(String vehicleId) {
+  hitDeleteVehicleApi(String vehicleId) {
     customLoader.show();
     Get.find<AuthenticationApiService>()
         .deleteVehicleDetailsApi(vehicleId: vehicleId)
         .then((isDelete) {
       customLoader.hide();
-      if (isDelete==true) {
+      if (isDelete == true) {
         storage.remove(vehicleId);
         print("Delete vehicles successfully");
         if (storage.read(isVerifiedQr) == false) {
@@ -419,25 +455,38 @@ class HomeController extends GetxController
 
   void fetchVehicleDetails() async {
     customLoader.show();
-    String? vehicleId = getVehicleId();
-
     try {
-      VehicleListModel vehicleDetails = await Get.find<AuthenticationApiService>().getVehicleDetailsApiCall(vehicleId);
-      customLoader.hide();
+      vehicleListModel = await Get.find<AuthenticationApiService>().getVehicleApiCall();
 
-      brandController.value.text = vehicleDetails.brandName ?? '';
-      modelController.value.text = vehicleDetails.modelNumber ?? '';
-      registrationNumberController.value.text = vehicleDetails.registrationNumber ?? '';
-      dropDownValue.value = vehicleDetails.vehicleType ?? 'Cars';
+      registrationNumberController.value.text = vehicleListModel.registrationNumber ?? '';
+      brandController.value.text = vehicleListModel.brandName ?? '';
+      modelController.value.text = vehicleListModel.modelNumber ?? '';
+
       update();
-      toast("Vehicle details fetched successfully");
     } catch (error) {
+      toast("Failed to fetch vehicle details: $error");
+    } finally {
       customLoader.hide();
-      toast('Error occurred: $error');
     }
   }
+ // try{
+ //   if (vehicleListModel != null) {
+ //     registrationNumberController.value.text = vehicleListModel.registrationNumber ?? '';
+ //     brandController.value.text = vehicleListModel.brandName ?? '';
+ //     modelController.value.text = vehicleListModel.modelNumber ?? '';
+ //   }
+ //   update();
+ //
+ // }catch(error){
+ //   toast("failed to fetch vehicle details: $error");
+ // }finally{
+ //   customLoader.hide();
+ //    }
 
-  String? getVehicleId() {
-    return storage.read(vehicleId);
   }
-}
+
+
+
+  // String? getVehicleId() {
+  //   return storage.read(vehicleId);
+  // }

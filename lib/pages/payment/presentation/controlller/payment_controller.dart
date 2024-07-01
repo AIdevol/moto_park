@@ -1,8 +1,14 @@
 // import 'package:flutter/rendering.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:moto_park/navigation/navigation.dart';
 import 'package:moto_park/utilities/custom_flashbar.dart';
+
+import '../../../../main.dart';
+import '../../../../response_model/subscription_data_model.dart';
+import '../../../../services/APIs/auth_service/auth_api_service.dart';
+import '../../../Authentication/presentation/controllers/subscription_screen_controller.dart';
 
 class PaymentController extends GetxController{
   // key_id,key_secret
@@ -28,6 +34,9 @@ class PaymentController extends GetxController{
       "paymentId": response.paymentId,
       "signature": response.signature,
     });
+    SubscriptionScreenController subscriptionController = Get.find<SubscriptionScreenController>();
+    subscriptionController.hitsubsubscriptionApicall();
+
     toast("Payment Successful");
 
   }
@@ -49,8 +58,6 @@ class PaymentController extends GetxController{
     toast("External Wallet Name: $response.walletName.");
     }
   // }
-
-
 
   @override
   void onClose() {

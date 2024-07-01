@@ -221,6 +221,7 @@ class AddVehicleController extends GetxController {
   late FocusNode brandFocusNode;
   late FocusNode modelFocusNode;
   late FocusNode rgFocusNode;
+  VehicleListModel addingvehicleReq = VehicleListModel();
 
   List<String> vehicleType = [
     "Auto",
@@ -270,7 +271,7 @@ class AddVehicleController extends GetxController {
         return;
       }
 
-      final loginReq = {
+       var loginReq = {
         "brand_name": brandController.text,
         "model_number": modelController.text,
         "registration_number": registrationNumberController.text,
@@ -281,14 +282,18 @@ class AddVehicleController extends GetxController {
 
       Get.find<AuthenticationApiService>()
           .addVehicleDetailsApiCall(dataBody: loginReq)
-          .then((vehicleListModel) {
-        if (vehicleListModel.id != null) {
-          storage.write('vehicleId', vehicleListModel.id.toString());
-          toast("Vehicle ID saved: ${vehicleListModel.id}");
-        }
-        print(vehicleListModel.id);
+          .then((value) async{
+            customLoader.hide();
+            addingvehicleReq = value;
+            toast(addingvehicleReq.id);
+            storage.write("vehicleId", addingvehicleReq.id?.toString()??"");
+        // if (vehicleListModel.id != null) {
+        //   storage.write('vehicleId', vehicleListModel.id.toString());
+        //   toast("Vehicle ID saved: ${vehicleListModel.id}");
+        // }
+        // print(vehicleListModel.id);
         // toast(vehicleListModel.id?.toString() ?? 'Failed to get vehicle ID');
-        customLoader.hide();
+        // customLoader.hide();
         toast("Vehicle added successfully");
       }).catchError((error) {
         customLoader.hide();

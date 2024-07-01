@@ -29,7 +29,7 @@ class EditProfileScreen extends GetView<EditProfileController> {
   final formGlobalKeyEdit = GlobalKey<FormState>();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(context) {
     return MyAnnotatedRegion(
       child: GetBuilder<EditProfileController>(builder: (controller) {
         return Scaffold(

@@ -4,7 +4,7 @@ const String isFirstTime = 'isFirstTime';
 const String userId = 'userId';
 const String LOCALKEY_token = "LOCALKEY_token";
 const String RefreshToken = "RefreshToken";
-// const String vehicleId = 'vehicleId';
+const String vehicleId = 'vehicleId';
 
 const String rememberMe = 'rememberMe';
 const String emailKey = 'emailKey';

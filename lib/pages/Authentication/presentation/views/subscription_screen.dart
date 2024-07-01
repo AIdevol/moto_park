@@ -178,9 +178,6 @@ class SubscriptionScreen extends GetView<SubscriptionScreenController> {
           subscriptionBuilder(),
           GradientButton(
             onTap: () {
-              controller.hitsubsubscriptionApicall();
-
-
               var options = {
                 'key': 'rzp_test_2P38XNePtDYveW',
                 'amount': controller.selectedIndex == 0

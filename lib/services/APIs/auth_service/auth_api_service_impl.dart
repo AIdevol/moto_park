@@ -20,4 +20,5 @@ abstract class AuthenticationApi {
       {Map<String, dynamic>? dataBody});
 
   Future<VehicleListModel> getVehicleDetailsApiCall(String? vehicleId);
+  Future<VehicleListModel> getVehicleApiCall();
 }

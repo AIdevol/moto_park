@@ -202,13 +202,13 @@ class HomeScreen extends GetView<HomeController> {
                           vGap(40),
                           _vehicleTile(),
                           vGap(Get.height * .25),
-                          // _boderLineButton("Add Vehicle",
-                          //     onTap: () => Get.toNamed(AppRoutes.addVehicle)),
-                          // vGap(40),
-                          // _boderLineButton("Licence", onTap: () {
-                          //   toast("No Licence Available");
-                          //   Get.toNamed(AppRoutes.subscriptionScreen);
-                          // })
+                          _boderLineButton("Add Vehicle",
+                              onTap: () => Get.toNamed(AppRoutes.addVehicle)),
+                          vGap(20),
+                          _boderLineButton("Licence", onTap: () {
+                            toast("No Licence Available");
+                            Get.toNamed(AppRoutes.subscriptionScreen);
+                          })
                         ],
                       ).paddingSymmetric(horizontal: 20, vertical: 0),
                     ),
@@ -325,7 +325,7 @@ class HomeScreen extends GetView<HomeController> {
           title: Obx(()=>Text(
             controller.registrationNumberController.value.text.isNotEmpty
                 ? controller.registrationNumberController.value.text
-                : "No Reg. Number",
+                : "No vehicle",
             /*'PB56AB1234',*/
             style: BalooStyles.balooboldTextStyle(color: Colors.black),
             textAlign: TextAlign.start,
@@ -333,7 +333,7 @@ class HomeScreen extends GetView<HomeController> {
           subtitle: Obx(()=> Text(
             controller.modelController.value.text.isNotEmpty
                 ? controller.modelController.value.text
-                : "No Model No.",
+                : "No vehicle No.",
         /*'Bently Bentlgya',*/
         style: BalooStyles.baloonormalTextStyle(color: Colors.grey),
         textAlign: TextAlign.start,

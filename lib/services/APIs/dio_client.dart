@@ -86,7 +86,8 @@ class DioClient {
   }
 // Https method get
   Future<dynamic> get(String uri,
-      {Map<String, dynamic>? queryParameters,
+      {data,
+        Map<String, dynamic>? queryParameters,
       Options? options,
       CancelToken? cancelToken,
       ProgressCallback? onReceiveProgress,
